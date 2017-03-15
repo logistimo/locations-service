@@ -35,19 +35,19 @@ public class Place extends AuditableEntity {
     private PlaceType type;
 
     @Column(name = "COUNTRYID")
-    private Long countryId;
+    private String countryId;
 
     @Column(name = "STATEID")
-    private Long stateId;
+    private String stateId;
 
     @Column(name = "BLOCKID")
-    private Long blockId;
+    private String blockId;
 
     @Column(name = "SUBDISTID")
-    private Long subdistrictId;
+    private String subdistrictId;
 
     @Column(name = "DISTID")
-    private Long districtId;
+    private String districtId;
 
     public Place () {}
 
@@ -99,43 +99,43 @@ public class Place extends AuditableEntity {
         this.type = type;
     }
 
-    public Long getCountryId() {
+    public String getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(Long countryId) {
+    public void setCountryId(String countryId) {
         this.countryId = countryId;
     }
 
-    public Long getStateId() {
+    public String getStateId() {
         return stateId;
     }
 
-    public void setStateId(Long stateId) {
+    public void setStateId(String stateId) {
         this.stateId = stateId;
     }
 
-    public Long getBlockId() {
+    public String getBlockId() {
         return blockId;
     }
 
-    public void setBlockId(Long blockId) {
+    public void setBlockId(String blockId) {
         this.blockId = blockId;
     }
 
-    public Long getSubdistrictId() {
+    public String getSubdistrictId() {
         return subdistrictId;
     }
 
-    public void setSubdistrictId(Long subdistrictId) {
+    public void setSubdistrictId(String subdistrictId) {
         this.subdistrictId = subdistrictId;
     }
 
-    public Long getDistrictId() {
+    public String getDistrictId() {
         return districtId;
     }
 
-    public void setDistrictId(Long districtId) {
+    public void setDistrictId(String districtId) {
         this.districtId = districtId;
     }
 }

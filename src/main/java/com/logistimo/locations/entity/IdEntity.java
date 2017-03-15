@@ -1,6 +1,9 @@
 package com.logistimo.locations.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,14 +17,15 @@ import javax.persistence.MappedSuperclass;
 public class IdEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    protected Long id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+    protected String id;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

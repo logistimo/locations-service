@@ -9,36 +9,36 @@ public class LocationResponseModel implements Serializable{
 
   private String country;
 
-  private Long countryId;
+  private String countryId;
 
   private String state;
 
-  private Long stateId;
+  private String stateId;
 
   private String district;
 
-  private Long districtId;
+  private String districtId;
 
   private String taluk;
 
-  private Long talukId;
+  private String talukId;
 
   private String block;
 
-  private Long blockId;
+  private String blockId;
 
   private String place;
 
-  private Long placeId;
+  private String placeId;
 
   public LocationResponseModel() {
 
   }
 
-  public LocationResponseModel(String country, Long countryId, String state,
-                               Long stateId, String district, Long districtId,
-                               String taluk, Long talukId, String block, Long blockId,
-                               String place, Long placeId) {
+  public LocationResponseModel(String country, String countryId, String state,
+                               String stateId, String district, String districtId,
+                               String taluk, String talukId, String block, String blockId,
+                               String place, String placeId) {
     this.country = country;
     this.countryId = countryId;
     this.state = state;
@@ -61,11 +61,11 @@ public class LocationResponseModel implements Serializable{
     this.country = country;
   }
 
-  public Long getCountryId() {
+  public String getCountryId() {
     return countryId;
   }
 
-  public void setCountryId(Long countryId) {
+  public void setCountryId(String countryId) {
     this.countryId = countryId;
   }
 
@@ -77,11 +77,11 @@ public class LocationResponseModel implements Serializable{
     this.state = state;
   }
 
-  public Long getStateId() {
+  public String getStateId() {
     return stateId;
   }
 
-  public void setStateId(Long stateId) {
+  public void setStateId(String stateId) {
     this.stateId = stateId;
   }
 
@@ -93,11 +93,11 @@ public class LocationResponseModel implements Serializable{
     this.district = district;
   }
 
-  public Long getDistrictId() {
+  public String getDistrictId() {
     return districtId;
   }
 
-  public void setDistrictId(Long districtId) {
+  public void setDistrictId(String districtId) {
     this.districtId = districtId;
   }
 
@@ -109,11 +109,11 @@ public class LocationResponseModel implements Serializable{
     this.taluk = taluk;
   }
 
-  public Long getTalukId() {
+  public String getTalukId() {
     return talukId;
   }
 
-  public void setTalukId(Long talukId) {
+  public void setTalukId(String talukId) {
     this.talukId = talukId;
   }
 
@@ -125,11 +125,11 @@ public class LocationResponseModel implements Serializable{
     this.block = block;
   }
 
-  public Long getBlockId() {
+  public String getBlockId() {
     return blockId;
   }
 
-  public void setBlockId(Long blockId) {
+  public void setBlockId(String blockId) {
     this.blockId = blockId;
   }
 
@@ -141,11 +141,11 @@ public class LocationResponseModel implements Serializable{
     this.place = place;
   }
 
-  public Long getPlaceId() {
+  public String getPlaceId() {
     return placeId;
   }
 
-  public void setPlaceId(Long placeId) {
+  public void setPlaceId(String placeId) {
     this.placeId = placeId;
   }
 

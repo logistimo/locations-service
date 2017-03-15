@@ -57,7 +57,7 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
     District district = null;
     if (!StringUtils.isEmpty(s.getDistrict())) {
       district = repoApi.getDistrictByName(s.getDistrict());
-      if(null != state && !district.getState().equals(state)) {
+      if(district == null || !district.getState().equals(state)) {
         message = " district state combination not valid \n";
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
@@ -66,7 +66,7 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
     }
     if(!StringUtils.isEmpty(s.getTaluk())) {
       SubDistrict subDistrict = repoApi.getSubDistrictByName(s.getTaluk());
-      if (null != district && !subDistrict.getDistrict().equals(district)) {
+      if (subDistrict == null || !subDistrict.getDistrict().equals(district)) {
         message = " district taluk combination not valid \n";
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
