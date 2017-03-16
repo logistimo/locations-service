@@ -1,13 +1,13 @@
 package com.logistimo.locations.cache;
 
+import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.Place;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
+import com.logistimo.locations.repository.location.CityRepository;
 import com.logistimo.locations.repository.location.CountryRepository;
 import com.logistimo.locations.repository.location.DistrictRepository;
-import com.logistimo.locations.repository.location.PlaceRepository;
 import com.logistimo.locations.repository.location.StateRepository;
 import com.logistimo.locations.repository.location.SubDistrictRepository;
 
@@ -39,7 +39,7 @@ public class LocationCacheLoader {
   StateRepository stateRepository;
 
   @Resource
-  PlaceRepository placeRepository;
+  CityRepository cityRepository;
 
   @Resource
   DistrictRepository districtRepository;
@@ -63,16 +63,16 @@ public class LocationCacheLoader {
 
   private void loadPlaceCache(){
     int limit  = 50;
-    int total = (int)placeRepository.count();
+    int total = (int)cityRepository.count();
     int noOfPages = total/limit;
     if(total%limit != 0)
       noOfPages = noOfPages+1;
     int p= 0;
-    Cache cache = getCacheByName("place");
+    Cache cache = getCacheByName("city");
     while(p < noOfPages) {
-      Page<Place> res = placeRepository.findAll(new PageRequest(p, limit));
-      for(Place pl:res.getContent()) {
-        cache.putIfAbsent(pl.getName(),pl);
+      Page<City> res = cityRepository.findAll(new PageRequest(p, limit));
+      for(City city:res.getContent()) {
+        cache.putIfAbsent(city.getName(),city);
       }
       p++;
     }
@@ -151,7 +151,7 @@ public class LocationCacheLoader {
     burstCacheByName("state");
     burstCacheByName("district");
     burstCacheByName("subdistrict");
-    burstCacheByName("place");
+    burstCacheByName("city");
     log.info("cache cleared successfully");
   }
 

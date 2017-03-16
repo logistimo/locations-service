@@ -16,7 +16,7 @@ public class PlaceRunner implements CommandLineRunner {
   @Resource
   PlaceLoader loader;
 
-  @Value("${place.start}")
+  @Value("${city.start}")
   Boolean run;
 
   @Override

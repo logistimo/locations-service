@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class LocationResponseModel implements Serializable{
 
+  private String city;
   private String country;
 
   private String countryId;
@@ -38,7 +39,7 @@ public class LocationResponseModel implements Serializable{
   public LocationResponseModel(String country, String countryId, String state,
                                String stateId, String district, String districtId,
                                String taluk, String talukId, String block, String blockId,
-                               String place, String placeId) {
+                               String city, String placeId) {
     this.country = country;
     this.countryId = countryId;
     this.state = state;
@@ -49,7 +50,7 @@ public class LocationResponseModel implements Serializable{
     this.talukId = talukId;
     this.block = block;
     this.blockId = blockId;
-    this.place = place;
+    this.city = city;
     this.placeId = placeId;
   }
 
@@ -162,7 +163,7 @@ public class LocationResponseModel implements Serializable{
         ", talukId=" + talukId +
         ", block='" + block + '\'' +
         ", blockId=" + blockId +
-        ", place='" + place + '\'' +
+        ", city='" + place + '\'' +
         ", placeId=" + placeId +
         '}';
   }

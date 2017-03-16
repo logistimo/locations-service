@@ -26,8 +26,16 @@ public class LocationRequestModel implements Serializable {
 
   private String block;
 
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
   @NotNull
-  private String place;
+  private String city;
 
   private Double latitude;
 
@@ -94,11 +102,11 @@ public class LocationRequestModel implements Serializable {
   }
 
   public String getPlace() {
-    return place;
+    return city;
   }
 
-  public void setPlace(String place) {
-    this.place = place;
+  public void setPlace(String city) {
+    this.city = city;
   }
 
   public Double getLatitude() {
@@ -150,7 +158,7 @@ public class LocationRequestModel implements Serializable {
         ", district='" + district + '\'' +
         ", taluk='" + taluk + '\'' +
         ", block='" + block + '\'' +
-        ", place='" + place + '\'' +
+        ", city='" + city + '\'' +
         ", latitude=" + latitude +
         ", longitude=" + longitude +
         ", pincode='" + pincode + '\'' +

@@ -2,7 +2,7 @@ package com.logistimo.locations.service.impl;
 
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.Place;
+import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.exception.LSServiceException;
@@ -63,57 +63,57 @@ public class LocationServiceImpl implements LocationService {
     //subdistrict detail
     SubDistrict subDistrict = repoApi.getSubDistrictByName(model.getTaluk());
     //Place detail
-    Place place = getAndCreate(model,country,state,district,subDistrict);
+    City city = getAndCreate(model,country,state,district,subDistrict);
 
     //returning response
-    return getResponse(place,country.getName(),state.getName(),district != null?district.getName():null,subDistrict !=null?subDistrict.getName():null);
+    return getResponse(city,country.getName(),state.getName(),district != null?district.getName():null,subDistrict !=null?subDistrict.getName():null);
   }
 
   @Override
-  public List<Place> getPlaces(int page, int limit) {
+  public List<City> getPlaces(int page, int limit) {
     Pageable pageable = new PageRequest(page,limit);
     return repoApi.getPlaces(pageable).getContent();
   }
 
-  private Place getAndCreate(LocationRequestModel model,Country country,State state,District district,SubDistrict subDistrict){
+  private City getAndCreate(LocationRequestModel model,Country country,State state,District district,SubDistrict subDistrict){
 
-    Place place = repoApi.getPlaceByName(model.getPlace());
+    City city = repoApi.getPlaceByName(model.getPlace());
     //if no existing place found create one
-    if (place == null) {
-      place = new Place();
-      place.setName(model.getPlace());
-      place.setCreatedBy(model.getUserName());
-      place.setCreatedOn(new Date());
+    if (city == null) {
+      city = new City();
+      city.setName(model.getPlace());
+      city.setCreatedBy(model.getUserName());
+      city.setCreatedOn(new Date());
       if (null != district) {
-        place.setDistrictId(district.getId());
+        city.setDistrictId(district.getId());
       }
       if (null != subDistrict) {
-        place.setSubdistrictId(subDistrict.getId());
+        city.setSubdistrictId(subDistrict.getId());
       }
-      place.setCountryId(country.getId());
-      place.setStateId(state.getId());
-      place.setLatitude(model.getLatitude());
-      place.setLongitude(model.getLongitude());
+      city.setCountryId(country.getId());
+      city.setStateId(state.getId());
+      city.setLatitude(model.getLatitude());
+      city.setLongitude(model.getLongitude());
       if (null != model.getPincode()) {
-        place.setPostalCode(Integer.valueOf(model.getPincode()));
+        city.setPostalCode(Integer.valueOf(model.getPincode()));
       }
-      place = repoApi.savePlace(place);
+      city = repoApi.savePlace(city);
     }
-    return  place;
+    return  city;
   }
 
-  private LocationResponseModel getResponse(Place place,String country,String state,String dist, String taluk) {
+  private LocationResponseModel getResponse(City city,String country,String state,String dist, String taluk) {
     LocationResponseModel m = new LocationResponseModel();
     m.setCountry(country);
-    m.setCountryId(place.getCountryId());
+    m.setCountryId(city.getCountryId());
     m.setState(state);
-    m.setStateId(place.getStateId());
+    m.setStateId(city.getStateId());
     m.setDistrict(dist);
-    m.setDistrictId(place.getDistrictId());
+    m.setDistrictId(city.getDistrictId());
     m.setTaluk(taluk);
-    m.setTalukId(place.getSubdistrictId());
-    m.setPlace(place.getName());
-    m.setPlaceId(place.getId());
+    m.setTalukId(city.getSubdistrictId());
+    m.setPlace(city.getName());
+    m.setPlaceId(city.getId());
     return m;
   }
 

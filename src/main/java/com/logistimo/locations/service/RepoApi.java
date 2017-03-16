@@ -1,8 +1,8 @@
 package com.logistimo.locations.service;
 
+import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.Place;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 
@@ -24,9 +24,9 @@ public interface RepoApi {
 
   SubDistrict getSubDistrictByName(String name);
 
-  Place getPlaceByName(String name);
+  City getPlaceByName(String name);
 
-  Place savePlace(Place place);
+  City savePlace(City city);
 
-  Page<Place> getPlaces(Pageable pageable);
+  Page<City> getPlaces(Pageable pageable);
 }

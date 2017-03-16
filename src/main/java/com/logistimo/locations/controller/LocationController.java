@@ -1,6 +1,6 @@
 package com.logistimo.locations.controller;
 
-import com.logistimo.locations.entity.location.Place;
+import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.service.LocationService;
@@ -30,13 +30,13 @@ public class LocationController {
   @Resource
   LocationService locationService;
 
-  @RequestMapping(path = "/place",method = RequestMethod.POST)
+  @RequestMapping(path = "/city",method = RequestMethod.POST)
   public @ResponseBody LocationResponseModel getLocationDetails (@RequestBody final LocationRequestModel location) {
     return locationService.getPlaceDetail(location);
   }
 
   @RequestMapping(path = "/places",method = RequestMethod.GET)
-  public @ResponseBody List<Place> getPlaces(@RequestParam(defaultValue = "0") int pageNo,
+  public @ResponseBody List<City> getPlaces(@RequestParam(defaultValue = "0") int pageNo,
                                              @RequestParam(defaultValue = "50") int limit) {
     return null;
   }

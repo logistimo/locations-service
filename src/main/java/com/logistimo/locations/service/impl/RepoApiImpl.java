@@ -1,13 +1,13 @@
 package com.logistimo.locations.service.impl;
 
+import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.Place;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
+import com.logistimo.locations.repository.location.CityRepository;
 import com.logistimo.locations.repository.location.CountryRepository;
 import com.logistimo.locations.repository.location.DistrictRepository;
-import com.logistimo.locations.repository.location.PlaceRepository;
 import com.logistimo.locations.repository.location.StateRepository;
 import com.logistimo.locations.repository.location.SubDistrictRepository;
 import com.logistimo.locations.service.RepoApi;
@@ -33,7 +33,7 @@ public class RepoApiImpl implements RepoApi {
   StateRepository stateRepository;
 
   @Resource
-  PlaceRepository placeRepository;
+  CityRepository cityRepository;
 
   @Resource
   DistrictRepository districtRepository;
@@ -72,20 +72,20 @@ public class RepoApiImpl implements RepoApi {
   }
 
   @Override
-  @Cacheable(value ="place")
-  public Place getPlaceByName(String name) {
-    return placeRepository.findByPlaceName(name);
+  @Cacheable(value ="city")
+  public City getPlaceByName(String name) {
+    return cityRepository.findByPlaceName(name);
   }
 
   @Override
-  @CachePut(value = "place",key = "#place.name")
-  public Place savePlace(Place place) {
-    return  placeRepository.save(place);
+  @CachePut(value = "city",key = "#city.name")
+  public City savePlace(City city) {
+    return  cityRepository.save(city);
   }
 
   @Override
-  public Page<Place> getPlaces(Pageable pageable) {
-    return placeRepository.findAll(pageable);
+  public Page<City> getPlaces(Pageable pageable) {
+    return cityRepository.findAll(pageable);
   }
 }
 
