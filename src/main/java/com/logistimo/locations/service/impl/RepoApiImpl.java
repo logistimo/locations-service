@@ -50,7 +50,7 @@ public class RepoApiImpl implements RepoApi {
 
   @Override
   public Country getCountryByName(String name) {
-    return null;
+    return countryRepository.findByName(name);
   }
 
   @Override

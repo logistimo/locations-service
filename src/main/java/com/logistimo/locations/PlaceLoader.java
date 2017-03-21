@@ -20,6 +20,10 @@ import javax.annotation.Resource;
 @Component
 public class PlaceLoader {
 
+  private static final String UNAME = "test-user";
+
+  private static final String ANAME = "test";
+
   @Resource
   KioskRepository kioskRepository;
 
@@ -54,6 +58,9 @@ public class PlaceLoader {
       m.setDistrict(k.getDistrict());
       m.setTaluk(k.getSubDistrict());
       m.setPlace(k.getCity());
+      //test set up
+      m.setUserName(UNAME);
+      m.setAppName(ANAME);
       try {
         rm = locationService.getPlaceDetail(m);
 
@@ -63,17 +70,22 @@ public class PlaceLoader {
       }
       if(rm == null)
         continue;
-      if (null != rm.getCountryId())
-      k.setCountryId(new Long(rm.getCountryId()));
-      if (null != rm.getStateId())
-      k.setStateId(new Long(rm.getStateId()));
-      if (null != rm.getDistrictId())
-      k.setDistrictId(new Long(rm.getDistrictId()));
-      if (null != rm.getTalukId())
-      k.setSubdistrictId(new Long(rm.getTalukId()));
+      if (null != rm.getCountryId()) {
+        k.setCountryId(rm.getCountryId());
+      }
+      if (null != rm.getStateId()) {
+        k.setStateId(rm.getStateId());
+      }
+      if (null != rm.getDistrictId()) {
+        k.setDistrictId(rm.getDistrictId());
+      }
+      if (null != rm.getTalukId()) {
+        k.setSubdistrictId(rm.getTalukId());
+      }
 
-      if(rm.getPlaceId() != null)
-      k.setPlaceId(new Long(rm.getPlaceId()));
+      if (rm.getPlaceId() != null) {
+        k.setPlaceId(rm.getPlaceId());
+      }
     }
     kioskRepository.save(list);
   }

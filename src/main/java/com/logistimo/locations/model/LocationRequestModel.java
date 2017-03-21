@@ -12,12 +12,12 @@ import javax.validation.constraints.NotNull;
 @ValidLocation
 public class LocationRequestModel implements Serializable {
 
-  @NotNull
+  @NotNull(message = "Country code can not be null!")
   private String countryCode;
 
   private String countryName;
 
-  @NotNull
+  @NotNull(message = "State can not be null!")
   private String state;
 
   private String district;
@@ -25,6 +25,18 @@ public class LocationRequestModel implements Serializable {
   private String taluk;
 
   private String block;
+  @NotNull(message = "City can not be null!")
+  private String city;
+  private Double latitude;
+  private Double longitude;
+  private String pincode;
+  @NotNull(message = "app name can not be null!")
+  private String appName;
+  @NotNull(message = "user name can not be null!")
+  private String userName;
+
+  public LocationRequestModel() {
+  }
 
   public String getCity() {
     return city;
@@ -32,25 +44,6 @@ public class LocationRequestModel implements Serializable {
 
   public void setCity(String city) {
     this.city = city;
-  }
-
-  @NotNull
-  private String city;
-
-  private Double latitude;
-
-  private Double longitude;
-
-  private String pincode;
-
-  @NotNull
-  private String appName;
-
-  @NotNull
-  private String userName;
-
-
-  public LocationRequestModel() {
   }
 
   public String getCountryName() {

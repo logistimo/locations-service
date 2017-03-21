@@ -38,7 +38,7 @@ public class LocationController {
   @RequestMapping(path = "/places",method = RequestMethod.GET)
   public @ResponseBody List<City> getPlaces(@RequestParam(defaultValue = "0") int pageNo,
                                              @RequestParam(defaultValue = "50") int limit) {
-    return null;
+    return locationService.getPlaces(pageNo, limit);
   }
 
 }

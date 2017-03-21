@@ -22,8 +22,8 @@ public class PlaceRunner implements CommandLineRunner {
   @Override
   public void run(String... strings) throws Exception {
 
-    if(!run) {
-      loader.load();
+    if (run) {
+      //loader.load();
     }
   }
 }
