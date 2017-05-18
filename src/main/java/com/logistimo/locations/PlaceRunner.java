@@ -23,7 +23,7 @@ public class PlaceRunner implements CommandLineRunner {
   public void run(String... strings) throws Exception {
 
     if (run) {
-      //loader.load();
+     // loader.load();
     }
   }
 }

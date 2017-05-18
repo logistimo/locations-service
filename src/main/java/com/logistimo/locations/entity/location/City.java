@@ -22,7 +22,7 @@ public class City extends AuditableEntity {
     private String code;
 
     @Column(name = "POSTALCODE")
-    private Integer postalCode;
+    private String postalCode;
 
     @Column(name = "LONGITUDE")
     private Double longitude;
@@ -67,11 +67,11 @@ public class City extends AuditableEntity {
         this.code = code;
     }
 
-    public Integer getPostalCode() {
+    public String getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(Integer postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 

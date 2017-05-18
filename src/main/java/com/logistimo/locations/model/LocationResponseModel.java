@@ -28,9 +28,9 @@ public class LocationResponseModel implements Serializable{
 
   private String blockId;
 
-  private String place;
-
   private String placeId;
+
+  private String zipcode;
 
   public LocationResponseModel() {
 
@@ -39,7 +39,7 @@ public class LocationResponseModel implements Serializable{
   public LocationResponseModel(String country, String countryId, String state,
                                String stateId, String district, String districtId,
                                String taluk, String talukId, String block, String blockId,
-                               String city, String placeId) {
+                               String city, String placeId, String zipcode) {
     this.country = country;
     this.countryId = countryId;
     this.state = state;
@@ -52,6 +52,7 @@ public class LocationResponseModel implements Serializable{
     this.blockId = blockId;
     this.city = city;
     this.placeId = placeId;
+    this.zipcode = zipcode;
   }
 
   public String getCountry() {
@@ -134,20 +135,28 @@ public class LocationResponseModel implements Serializable{
     this.blockId = blockId;
   }
 
-  public String getPlace() {
-    return place;
-  }
-
-  public void setPlace(String place) {
-    this.place = place;
-  }
-
   public String getPlaceId() {
     return placeId;
   }
 
   public void setPlaceId(String placeId) {
     this.placeId = placeId;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getZipcode() {
+    return zipcode;
+  }
+
+  public void setZipcode(String zipcode) {
+    this.zipcode = zipcode;
   }
 
   @Override
@@ -163,7 +172,8 @@ public class LocationResponseModel implements Serializable{
         ", talukId=" + talukId +
         ", block='" + block + '\'' +
         ", blockId=" + blockId +
-        ", city='" + place + '\'' +
+        ", city='" + city + '\'' +
+        ", zipcode ='" + zipcode + '\'' +
         ", placeId=" + placeId +
         '}';
   }

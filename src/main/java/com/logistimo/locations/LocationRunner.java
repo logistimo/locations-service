@@ -13,7 +13,10 @@ import javax.annotation.Resource;
 public class LocationRunner implements CommandLineRunner {
 
   @Resource
-  LocationLoader loader;
+  LocationLoader lloader;
+
+  @Resource
+  PlaceLoader ploader;
 
   @Value("${city.start}")
   Boolean run;
@@ -21,8 +24,9 @@ public class LocationRunner implements CommandLineRunner {
   @Override
   public void run(String... strings) throws Exception {
 
-    if(!run) {
-      loader.load();
+    if(run) {
+//      lloader.load();
+      ploader.load();
     }
   }
 }

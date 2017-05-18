@@ -65,8 +65,10 @@ public class LocationServiceImpl implements LocationService {
     //Place detail
     City city = getAndCreate(model,country,state,district,subDistrict);
 
+
+
     //returning response
-    return getResponse(city,country.getName(),state.getName(),district != null?district.getName():null,subDistrict !=null?subDistrict.getName():null);
+    return getResponse(city,country.getName(),state.getName(),district != null?district.getName():null,subDistrict !=null?subDistrict.getName():null,model.getPincode());
   }
 
   @Override
@@ -94,15 +96,20 @@ public class LocationServiceImpl implements LocationService {
       city.setStateId(state.getId());
       city.setLatitude(model.getLatitude());
       city.setLongitude(model.getLongitude());
-      if (null != model.getPincode()) {
-        city.setPostalCode(Integer.valueOf(model.getPincode()));
+      if (model.getPincode() != null) {
+        city.setPostalCode(model.getPincode());
+      }
+      city = repoApi.savePlace(city);
+    }else{
+      if (model.getPincode() != null) {
+        city.setPostalCode(model.getPincode());
       }
       city = repoApi.savePlace(city);
     }
     return  city;
   }
 
-  private LocationResponseModel getResponse(City city,String country,String state,String dist, String taluk) {
+  private LocationResponseModel getResponse(City city,String country,String state,String dist, String taluk, String zipcode) {
     LocationResponseModel m = new LocationResponseModel();
     m.setCountry(country);
     m.setCountryId(city.getCountryId());
@@ -112,8 +119,9 @@ public class LocationServiceImpl implements LocationService {
     m.setDistrictId(city.getDistrictId());
     m.setTaluk(taluk);
     m.setTalukId(city.getSubdistrictId());
-    m.setPlace(city.getName());
+    m.setCity(city.getName());
     m.setPlaceId(city.getId());
+    m.setZipcode(zipcode);
     return m;
   }
 
