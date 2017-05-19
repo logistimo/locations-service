@@ -100,8 +100,8 @@ public class LocationServiceImpl implements LocationService {
         city.setPostalCode(model.getPincode());
       }
       city = repoApi.savePlace(city);
-    }else{
-      if (model.getPincode() != null) {
+    } else {
+      if (model.getPincode() != null && !model.getPincode().equals(city.getPostalCode())) {
         city.setPostalCode(model.getPincode());
       }
       city = repoApi.savePlace(city);
