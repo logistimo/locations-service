@@ -25,7 +25,7 @@ public class LocationRequestModel implements Serializable {
   private String taluk;
 
   private String block;
-  @NotNull(message = "City can not be null!")
+  //@NotNull(message = "City can not be null!")
   private String city;
   private Double latitude;
   private Double longitude;

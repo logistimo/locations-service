@@ -61,14 +61,15 @@ public class LocationServiceImpl implements LocationService {
     //district detail
     District district = repoApi.getDistrictByName(model.getDistrict());
     //subdistrict detail
-    SubDistrict subDistrict = repoApi.getSubDistrictByName(model.getTaluk());
+    SubDistrict taluk = repoApi.getSubDistrictByName(model.getTaluk());
     //Place detail
-    City city = getAndCreate(model,country,state,district,subDistrict);
+    City city = getAndCreate(model,country,state,district,taluk);
 
 
 
     //returning response
-    return getResponse(city,country.getName(),state.getName(),district != null?district.getName():null,subDistrict !=null?subDistrict.getName():null,model.getPincode());
+    return getResponse(city!= null?city:null,country,state,district!= null?district:null,taluk!= null?taluk:null);
+
   }
 
   @Override
@@ -109,19 +110,26 @@ public class LocationServiceImpl implements LocationService {
     return  city;
   }
 
-  private LocationResponseModel getResponse(City city,String country,String state,String dist, String taluk, String zipcode) {
+  private LocationResponseModel getResponse(City city,Country country,State state,District dist, SubDistrict taluk) {
     LocationResponseModel m = new LocationResponseModel();
-    m.setCountry(country);
-    m.setCountryId(city.getCountryId());
-    m.setState(state);
-    m.setStateId(city.getStateId());
-    m.setDistrict(dist);
-    m.setDistrictId(city.getDistrictId());
-    m.setTaluk(taluk);
+    m.setCountry(country.getName());
+    m.setCountryId(country.getId());
+    m.setState(state.getName());
+    m.setStateId(state.getId());
+    if (dist != null) {
+      m.setDistrict(dist.getName());
+      m.setDistrictId(dist.getId());
+    }
+    if(taluk != null) {
+      m.setTaluk(taluk.getName());
+      m.setTalukId(taluk.getId());
+    }
     m.setTalukId(city.getSubdistrictId());
-    m.setCity(city.getName());
-    m.setPlaceId(city.getId());
-    m.setZipcode(zipcode);
+    if (city != null) {
+      m.setCity(city.getName());
+      m.setPlaceId(city.getId());
+      m.setZipcode(city.getPostalCode());
+    }
     return m;
   }
 
