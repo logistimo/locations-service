@@ -11,6 +11,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class AuditableEntity extends IdEntity {
 
+  private static final long serialVersionUID = 3487495895819394L;
+
     @Column(name = "CREATEDBY")
     protected String createdBy;
 

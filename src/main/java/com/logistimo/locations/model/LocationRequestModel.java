@@ -17,7 +17,7 @@ public class LocationRequestModel implements Serializable {
 
   private String countryName;
 
-  @NotNull(message = "State can not be null!")
+  //@NotNull(message = "State can not be null!")
   private String state;
 
   private String district;
@@ -95,7 +95,7 @@ public class LocationRequestModel implements Serializable {
   }
 
   public String getPlace() {
-    return city;
+    return this.city;
   }
 
   public void setPlace(String city) {

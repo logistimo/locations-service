@@ -15,6 +15,8 @@ import javax.persistence.Table;
 @Table(name = "CITY")
 public class City extends AuditableEntity {
 
+  private static final long serialVersionUID = 3487495895819399L;
+
     @Column(name = "PLACENAME")
     private String name;
 

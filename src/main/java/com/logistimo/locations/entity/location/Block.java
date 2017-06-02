@@ -17,6 +17,8 @@ import javax.persistence.Table;
 @Table(name = "BLOCK")
 public class Block extends AuditableEntity {
 
+  private static final long serialVersionUID = 3487495895819340L;
+
   @Column(name = "BLOCKNAME")
   private String name;
 

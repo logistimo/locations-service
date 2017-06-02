@@ -43,7 +43,7 @@ public class RepoApiImpl implements RepoApi {
 
 
   @Override
-  @Cacheable(value ="country")
+  @Cacheable(value = "country", condition = "#key != null")
   public Country getCountryByCode(String code) {
     return countryRepository.findByCode(code);
   }
@@ -54,31 +54,31 @@ public class RepoApiImpl implements RepoApi {
   }
 
   @Override
-  @Cacheable(value ="state")
+  @Cacheable(value = "state", condition = "#key != null")
   public State getStateByName(String name) {
     return stateRepository.findByName(name);
   }
 
   @Override
-  @Cacheable(value ="district")
+  @Cacheable(value = "district", condition = "#key != null")
   public District getDistrictByName(String name) {
     return districtRepository.findByName(name);
   }
 
   @Override
-  @Cacheable(value ="subdistrict")
+  @Cacheable(value = "subdistrict", condition = "#key != null")
   public SubDistrict getSubDistrictByName(String name) {
     return subDistrictRepository.findByName(name);
   }
 
   @Override
-  @Cacheable(value ="city")
+  @Cacheable(value = "city", condition = "#key != null")
   public City getPlaceByName(String name) {
     return cityRepository.findByPlaceName(name);
   }
 
   @Override
-  @CachePut(value = "city",key = "#city.name")
+  @CachePut(value = "city", key = "#city.name", condition = "#key != null")
   public City savePlace(City city) {
     return  cityRepository.save(city);
   }

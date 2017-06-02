@@ -21,10 +21,12 @@ import javax.persistence.Table;
 @Table(name = "SUBDISTRICT")
 public class SubDistrict extends AuditableEntity {
 
+  private static final long serialVersionUID = 3487495895819398L;
+
     @Column(name = "SUBDISNAME")
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "SUBDISTID")
     private Set<Block> blocks = new HashSet<Block>();
 

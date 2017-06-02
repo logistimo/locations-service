@@ -1,8 +1,11 @@
 package com.logistimo.locations.entity.location;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.logistimo.locations.entity.AuditableEntity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Created by kumargaurav on 17/01/17.
@@ -20,6 +24,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "STATE")
 public class State extends AuditableEntity {
+
+  private static final long serialVersionUID = 3487495895819396L;
 
     @Column(name = "STATENAME")
     private String name;
@@ -31,11 +37,28 @@ public class State extends AuditableEntity {
     @JoinColumn(name="COUNTRYID",referencedColumnName = "ID")
     private Country country;
 
+  @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "STATEID")
     private Set<District> districts = new HashSet<District>();
 
+  @Transient
+  private List<District> districtUI = new ArrayList<>();
+
     public State () {}
+
+  public void populateDistUI(Set<District> distList) {
+    districtUI.clear();
+    District dist = null;
+    if (distList.size() > 0) {
+      for (District s : distList) {
+        dist = new District();
+        dist.setId(s.getId());
+        dist.setName(s.getName());
+        districtUI.add(dist);
+      }
+    }
+  }
 
     public String getName() {
         return name;
@@ -67,6 +90,14 @@ public class State extends AuditableEntity {
 
     public void setDistricts(Set<District> districts) {
         this.districts = districts;
+    }
+
+  public List<District> getDistrictUI() {
+    return districtUI;
+  }
+
+  public void setDistrictUI(List<District> districtUI) {
+    this.districtUI = districtUI;
     }
 
     @Override

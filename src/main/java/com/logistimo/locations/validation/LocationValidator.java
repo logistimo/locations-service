@@ -41,19 +41,24 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
       constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
       return false;
     }
-    State state = repoApi.getStateByName(s.getState());
-    if(null == state){
-      message = " Invalid state name \n";
-      constraintValidatorContext.disableDefaultConstraintViolation();
-      constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-      return false;
+    State state = null;
+    if (!StringUtils.isEmpty(s.getState())) {
+      state = repoApi.getStateByName(s.getState());
+      if (null == state) {
+        message = " Invalid state name \n";
+        constraintValidatorContext.disableDefaultConstraintViolation();
+        constraintValidatorContext.buildConstraintViolationWithTemplate(message)
+            .addConstraintViolation();
+        return false;
+      } else if (!state.getCountry().equals(country)) {
+        message = " State country combination not valid \n";
+        constraintValidatorContext.disableDefaultConstraintViolation();
+        constraintValidatorContext.buildConstraintViolationWithTemplate(message)
+            .addConstraintViolation();
+        return false;
+      }
     }
-    if(!state.getCountry().equals(country)) {
-      message = " State country combination not valid \n";
-      constraintValidatorContext.disableDefaultConstraintViolation();
-      constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
-      return false;
-    }
+
     District district = null;
     if (!StringUtils.isEmpty(s.getDistrict())) {
       district = repoApi.getDistrictByName(s.getDistrict());

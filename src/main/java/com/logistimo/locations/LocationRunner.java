@@ -18,14 +18,14 @@ public class LocationRunner implements CommandLineRunner {
   @Resource
   PlaceLoader ploader;
 
-  @Value("${city.start}")
+  @Value("${app-data.start}")
   Boolean run;
 
   @Override
   public void run(String... strings) throws Exception {
 
     if(run) {
-//      lloader.load();
+      //lloader.load();
       ploader.load();
     }
   }

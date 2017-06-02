@@ -1,8 +1,8 @@
 package com.logistimo.locations.service.impl;
 
+import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.exception.LSServiceException;
@@ -64,12 +64,9 @@ public class LocationServiceImpl implements LocationService {
     SubDistrict taluk = repoApi.getSubDistrictByName(model.getTaluk());
     //Place detail
     City city = getAndCreate(model,country,state,district,taluk);
-
-
-
     //returning response
-    return getResponse(city!= null?city:null,country,state,district!= null?district:null,taluk!= null?taluk:null);
-
+    return getResponse(city != null ? city : null, country, state != null ? state : null,
+        district != null ? district : null, taluk != null ? taluk : null);
   }
 
   @Override
@@ -80,11 +77,18 @@ public class LocationServiceImpl implements LocationService {
 
   private City getAndCreate(LocationRequestModel model,Country country,State state,District district,SubDistrict subDistrict){
 
-    City city = repoApi.getPlaceByName(model.getPlace());
+    City city = null;
+    String p = null;
+    //prevent null key lookup in cache
+    if (model.getPlace() != null && model.getPlace().trim().length() > 0) {
+      p = model.getPlace();
+      city = repoApi.getPlaceByName(p);
+    }
+
     //if no existing place found create one
-    if (city == null) {
+    if (city == null && p != null) {
       city = new City();
-      city.setName(model.getPlace());
+      city.setName(p);
       city.setCreatedBy(model.getUserName());
       city.setCreatedOn(new Date());
       if (null != district) {
@@ -101,7 +105,7 @@ public class LocationServiceImpl implements LocationService {
         city.setPostalCode(model.getPincode());
       }
       city = repoApi.savePlace(city);
-    } else {
+    } else if (city != null) {
       if (model.getPincode() != null && !model.getPincode().equals(city.getPostalCode())) {
         city.setPostalCode(model.getPincode());
       }
@@ -114,8 +118,10 @@ public class LocationServiceImpl implements LocationService {
     LocationResponseModel m = new LocationResponseModel();
     m.setCountry(country.getName());
     m.setCountryId(country.getId());
-    m.setState(state.getName());
-    m.setStateId(state.getId());
+    if (state != null) {
+      m.setState(state.getName());
+      m.setStateId(state.getId());
+    }
     if (dist != null) {
       m.setDistrict(dist.getName());
       m.setDistrictId(dist.getId());
@@ -124,7 +130,6 @@ public class LocationServiceImpl implements LocationService {
       m.setTaluk(taluk.getName());
       m.setTalukId(taluk.getId());
     }
-    m.setTalukId(city.getSubdistrictId());
     if (city != null) {
       m.setCity(city.getName());
       m.setPlaceId(city.getId());

@@ -2,6 +2,7 @@ package com.logistimo.locations.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
  * Created by kumargaurav on 14/02/17.
  */
 @Configuration
-@EnableTransactionManagement
+@EnableTransactionManagement(mode = AdviceMode.ASPECTJ)
 @EnableJpaRepositories(
     entityManagerFactoryRef = "lcEntityManagerFactory",
     transactionManagerRef = "lcTransactionManager",
@@ -51,6 +52,7 @@ public class LocationDSConfig {
     additionalProperties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.ehcache.EhCacheRegionFactory");
     additionalProperties.put("hibernate.cache.use_query_cache", "true");
     additionalProperties.put("hibernate.generate_statistics", "true");
+    additionalProperties.put("hibernate.enable_lazy_load_no_trans", "true");
 
     entityManagerFactory.setJpaProperties(additionalProperties);
     entityManagerFactory.setPackagesToScan("com.logistimo.locations.entity.location");

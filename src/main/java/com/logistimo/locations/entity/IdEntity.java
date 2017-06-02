@@ -14,6 +14,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public class IdEntity implements Serializable {
 
+  private static final long serialVersionUID = 3487495895819393L;
+
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")

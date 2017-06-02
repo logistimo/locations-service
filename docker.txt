@@ -1,0 +1,34 @@
+*********Dockerfile*****************
+
+FROM java:8
+
+MAINTAINER kumar <kumar@logistimo.com>
+
+VOLUME /temp
+
+ARG APP_NAME
+ARG APP_VERSION
+
+ADD ${APP_NAME}-${APP_VERSION}.jar location-service.jar
+
+RUN bash -c 'touch /location-service.jar'
+
+ENV JAVA_OPTS=""
+
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /location-service.jar" ]ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
+
+*********Dockerfile*****************
+
+********* docker build image *******
+mvn clean package docker:build
+********* docker build image *******
+
+
+********* docker run image *******
+ docker run -e "SPRING_PROFILES_ACTIVE=dev" -e "JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=15005,server=y,suspend=n"
+            -p 9090:9090 -p 15005:15005 -t loc/logistimo-locations:latest
+
+********* docker run image *******
+
+
+

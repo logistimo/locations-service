@@ -3,21 +3,24 @@ package com.logistimo.locations.entity.logistimo;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Created by kumargaurav on 14/02/17.
  */
 
-/*@Entity
+@Entity
 @Table(name = "USERACCOUNT")
-@AttributeOverrides({
+/*@AttributeOverrides({
     @AttributeOverride(name = "id",column = @Column(name = "USERID")),
     @AttributeOverride(name = "createdBy",column = @Column(name = "REGISTEREDBY")),
     @AttributeOverride(name = "createdOn",column = @Column(name = "UO"))
 })*/
 public class UserAccount {
 
-  @Column(name = "USERID")
+  @Id
   private String userId;
 
   @Column(name = "DID")
@@ -54,19 +57,19 @@ public class UserAccount {
   private Double latitude;
 
   @Column(name = "COUNTRYID")
-  private Long countryId;
+  private String countryId;
 
   @Column(name = "STATEID")
-  private Long stateId;
+  private String stateId;
 
   @Column(name = "DISTID")
-  private Long districtId;
+  private String districtId;
 
   @Column(name = "SUBDISTID")
-  private Long subdistrictId;
+  private String subdistrictId;
 
   @Column(name = "PLACEID")
-  private Long placeId;
+  private String placeId;
 
   public UserAccount () {}
 
@@ -158,43 +161,43 @@ public class UserAccount {
     this.latitude = latitude;
   }
 
-  public Long getCountryId() {
+  public String getCountryId() {
     return countryId;
   }
 
-  public void setCountryId(Long countryId) {
+  public void setCountryId(String countryId) {
     this.countryId = countryId;
   }
 
-  public Long getStateId() {
+  public String getStateId() {
     return stateId;
   }
 
-  public void setStateId(Long stateId) {
+  public void setStateId(String stateId) {
     this.stateId = stateId;
   }
 
-  public Long getDistrictId() {
+  public String getDistrictId() {
     return districtId;
   }
 
-  public void setDistrictId(Long districtId) {
+  public void setDistrictId(String districtId) {
     this.districtId = districtId;
   }
 
-  public Long getSubdistrictId() {
+  public String getSubdistrictId() {
     return subdistrictId;
   }
 
-  public void setSubdistrictId(Long subdistrictId) {
+  public void setSubdistrictId(String subdistrictId) {
     this.subdistrictId = subdistrictId;
   }
 
-  public Long getPlaceId() {
+  public String getPlaceId() {
     return placeId;
   }
 
-  public void setPlaceId(Long placeId) {
+  public void setPlaceId(String placeId) {
     this.placeId = placeId;
   }
 }

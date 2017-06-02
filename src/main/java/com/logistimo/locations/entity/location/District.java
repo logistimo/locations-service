@@ -1,8 +1,11 @@
 package com.logistimo.locations.entity.location;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.logistimo.locations.entity.AuditableEntity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Created by kumargaurav on 17/01/17.
@@ -20,6 +24,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "DISTRICT")
 public class District extends AuditableEntity {
+
+  private static final long serialVersionUID = 3487495895819397L;
 
     @Column(name = "DISTNAME")
     private String name;
@@ -31,11 +37,28 @@ public class District extends AuditableEntity {
     @JoinColumn(name="STATEID",referencedColumnName = "ID")
     private State state;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+  @JsonIgnore
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "DISTID")
     private Set<SubDistrict> subDistricts = new HashSet<SubDistrict>();
 
+  @Transient
+  private List<SubDistrict> subistrictUI = new ArrayList<>();
+
     public District () {}
+
+  public void populateSubDistUI(Set<SubDistrict> subdistList) {
+    subistrictUI.clear();
+    SubDistrict subdist = null;
+    if (subdistList.size() > 0) {
+      for (SubDistrict s : subdistList) {
+        subdist = new SubDistrict();
+        subdist.setId(s.getId());
+        subdist.setName(s.getName());
+        subistrictUI.add(subdist);
+      }
+    }
+  }
 
     public String getName() {
         return name;

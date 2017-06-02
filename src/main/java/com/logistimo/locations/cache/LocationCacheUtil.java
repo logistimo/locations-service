@@ -18,6 +18,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -25,9 +26,15 @@ import javax.annotation.Resource;
  * Created by kumargaurav on 02/03/17.
  */
 @Component
-public class LocationCacheLoader {
+public class LocationCacheUtil {
 
-  private static final Logger log = LoggerFactory.getLogger(LocationCacheLoader.class);
+  private static final Logger log = LoggerFactory.getLogger(LocationCacheUtil.class);
+
+  private static final String COUNTRY = "country";
+  private static final String STATE = "state";
+  private static final String DISTRICT = "district";
+  private static final String SDISTRICT = "subdistrict";
+  private static final String CITY = "city";
 
   @Resource
   CacheManager cacheManager;
@@ -61,6 +68,7 @@ public class LocationCacheLoader {
     loadPlaceCache();
   }
 
+  @Transactional
   private void loadPlaceCache(){
     int limit  = 50;
     int total = (int)cityRepository.count();
@@ -68,33 +76,44 @@ public class LocationCacheLoader {
     if(total%limit != 0)
       noOfPages = noOfPages+1;
     int p= 0;
-    Cache cache = getCacheByName("city");
+    Cache cache = getCacheByName(CITY);
     while(p < noOfPages) {
       Page<City> res = cityRepository.findAll(new PageRequest(p, limit));
       for(City city:res.getContent()) {
-        cache.putIfAbsent(city.getName(),city);
+        if (city.getName() != null) {
+          cache.putIfAbsent(city.getName(), city);
+        }
       }
       p++;
     }
   }
 
-  private void loadCountryCache () {
+  @Transactional(value = "lcTransactionManager", readOnly = true)
+  public void loadCountryCache() {
     int limit  = 50;
     int total = (int)countryRepository.count();
     int noOfPages = total/limit;
     if(total%limit != 0)
       noOfPages = noOfPages+1;
     int p= 0;
-    Cache cache = getCacheByName("country");
+    Cache cache = getCacheByName(COUNTRY);
     while(p < noOfPages) {
       Page<Country> res = countryRepository.findAll(new PageRequest(p, limit));
       for(Country pl:res.getContent()) {
-        cache.putIfAbsent(pl.getCode(),pl);
+        try {
+          pl.populateStateUI(pl.getStates());
+          if (pl.getName() != null) {
+            cache.putIfAbsent(pl.getName(), pl);
+          }
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
       p++;
     }
   }
 
+  @Transactional
   private void loadStateCache () {
     int limit  = 50;
     int total = (int)stateRepository.count();
@@ -102,16 +121,20 @@ public class LocationCacheLoader {
     if(total%limit != 0)
       noOfPages = noOfPages+1;
     int p= 0;
-    Cache cache = getCacheByName("state");
+    Cache cache = getCacheByName(STATE);
     while(p < noOfPages) {
       Page<State> res = stateRepository.findAll(new PageRequest(p, limit));
       for(State pl:res.getContent()) {
-        cache.putIfAbsent(pl.getName(),pl);
+        pl.populateDistUI(pl.getDistricts());
+        if (pl.getName() != null) {
+          cache.putIfAbsent(pl.getName(), pl);
+        }
       }
       p++;
     }
   }
 
+  @Transactional
   private void loadDistrictCache () {
     int limit  = 50;
     int total = (int)districtRepository.count();
@@ -119,16 +142,20 @@ public class LocationCacheLoader {
     if(total%limit != 0)
       noOfPages = noOfPages+1;
     int p= 0;
-    Cache cache = getCacheByName("district");
+    Cache cache = getCacheByName(DISTRICT);
     while(p < noOfPages) {
       Page<District> res = districtRepository.findAll(new PageRequest(p, limit));
       for(District pl:res.getContent()) {
-        cache.putIfAbsent(pl.getName(),pl);
+        pl.populateSubDistUI(pl.getSubDistricts());
+        if (pl.getName() != null) {
+          cache.putIfAbsent(pl.getName(), pl);
+        }
       }
       p++;
     }
   }
 
+  @Transactional
   private void loadSubDistrictCache () {
     int limit  = 50;
     int total = (int)subDistrictRepository.count();
@@ -136,22 +163,24 @@ public class LocationCacheLoader {
     if(total%limit != 0)
       noOfPages = noOfPages+1;
     int p= 0;
-    Cache cache = getCacheByName("subdistrict");
+    Cache cache = getCacheByName(SDISTRICT);
     while(p < noOfPages) {
       Page<SubDistrict> res = subDistrictRepository.findAll(new PageRequest(p, limit));
       for(SubDistrict pl:res.getContent()) {
-        cache.putIfAbsent(pl.getName(),pl);
+        if (pl.getName() != null) {
+          cache.putIfAbsent(pl.getName(), pl);
+        }
       }
       p++;
     }
   }
 
   public void burstAllCache() {
-    burstCacheByName("country");
-    burstCacheByName("state");
-    burstCacheByName("district");
-    burstCacheByName("subdistrict");
-    burstCacheByName("city");
+    burstCacheByName(COUNTRY);
+    burstCacheByName(STATE);
+    burstCacheByName(DISTRICT);
+    burstCacheByName(SDISTRICT);
+    burstCacheByName(CITY);
     log.info("cache cleared successfully");
   }
 
@@ -162,5 +191,10 @@ public class LocationCacheLoader {
 
   private Cache getCacheByName(String name) {
     return cacheManager.getCache(name);
+  }
+
+  public Object getCacheObject(String cache, String key) {
+    Cache c = getCacheByName(cache);
+    return c.get(key).get();
   }
 }
