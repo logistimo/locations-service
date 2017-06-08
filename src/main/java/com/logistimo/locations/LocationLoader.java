@@ -12,11 +12,12 @@ import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.repository.location.CountryRepository;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,12 +39,15 @@ public class LocationLoader {
   @Resource
   CountryRepository repository;
 
+
   public void load() throws IOException {
 
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    FileReader
-        fileReader =
-        new FileReader(new File(classLoader.getResource("location.json").getFile()));
+    //ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//    FileReader
+//        fileReader =
+//        new FileReader(new File(getClass().getResource("classpath:location.json").getFile()));
+    org.springframework.core.io.Resource resource = new ClassPathResource("location.json");
+    Reader fileReader = new InputStreamReader(resource.getInputStream());
     JsonParser parser = new JsonParser();
     JsonObject countries = parser.parse(fileReader).getAsJsonObject().get("data").getAsJsonObject();
     Iterator itr = countries.entrySet().iterator();
@@ -159,5 +163,4 @@ public class LocationLoader {
     }
     return subDistricts;
   }
-
 }

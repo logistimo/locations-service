@@ -6,7 +6,7 @@
 
     <groupId>com.logistimo</groupId>
     <artifactId>logistimo-locations</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -109,7 +109,13 @@
                 </executions>
                 <configuration>
                     <mainClass>com.logistimo.locations.Application</mainClass>
-                    <addResources>true</addResources>
+                    <!--<addResources>true</addResources>-->
+                    <requiresUnpack>
+                        <dependency>
+                            <groupId>com.logistimo</groupId>
+                            <artifactId>logistimo-locations</artifactId>
+                        </dependency>
+                    </requiresUnpack>
                 </configuration>
             </plugin>
 
@@ -127,7 +133,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.11</version>
                 <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <imageName>location-service:${project.version}.${build.number}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <resources>
                         <resource>

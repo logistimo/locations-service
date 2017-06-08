@@ -37,8 +37,8 @@ public class PlaceLoader {
 
 
   public void load() {
-    // loadKiosk();
-    // loadUser();
+    loadKiosk();
+    loadUser();
   }
 
   private void loadKiosk() {
