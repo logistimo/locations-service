@@ -26,46 +26,47 @@ public class Country extends AuditableEntity {
 
   private static final long serialVersionUID = 3487495895819395L;
 
-    @Column(name = "COUNTRYNAME")
-    private String name;
+  @Column(name = "COUNTRYNAME")
+  private String name;
 
-    @Column(name = "COUNTRYCODE")
-    private String code;
+  @Column(name = "COUNTRYCODE")
+  private String code;
 
   @JsonIgnore
-    @OneToMany(cascade= CascadeType.ALL,fetch= FetchType.LAZY)
-    @JoinColumn(name = "COUNTRYID")
-    private Set<State> states = new HashSet<State>();
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "COUNTRYID")
+  private Set<State> states = new HashSet<State>();
 
   @Transient
   private List<State> stateUI = new ArrayList<>();
 
-    public Country () {}
+  public Country() {
+  }
 
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public Set<State> getStates() {
-        return states;
-    }
+  public Set<State> getStates() {
+    return states;
+  }
 
-    public void setStates(Set<State> states) {
-        this.states = states;
-    }
+  public void setStates(Set<State> states) {
+    this.states = states;
+  }
 
   public List<State> getStateUI() {
     return stateUI;
@@ -86,28 +87,34 @@ public class Country extends AuditableEntity {
         stateUI.add(state);
       }
     }
+  }
+
+  @Override
+  public boolean equals(Object o) {
+
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    Country country = (Country) o;
 
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Country country = (Country) o;
-
-        if (getId() != null ? !getId().equals(country.getId()) : country.getId() != null) {
-            return false;
-        }
-
-        if (getName() != null ? !getName().equals(country.getName()) : country.getName() != null) {
-            return false;
-        }
-        return getCode() != null ? getCode().equals(country.getCode()) : country.getCode() == null;
+    if (getId() != null ? !getId().equals(country.getId()) : country.getId() != null) {
+      return false;
     }
 
+    if (getName() != null ? !getName().equals(country.getName()) : country.getName() != null) {
+      return false;
+    }
+    return getCode() != null ? getCode().equals(country.getCode()) : country.getCode() == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = getName() != null ? getName().hashCode() : 0;
+    result = 31 * result + getCode().hashCode();
+    return result;
+  }
 }

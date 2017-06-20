@@ -24,14 +24,5 @@ public class LocationRunner implements CommandLineRunner {
   @Override
   public void run(String... strings) throws Exception {
 
-    if(run) {
-      /*lloader.load();
-      try {
-        Thread.sleep(10000l);
-      } catch (Exception e) {
-        //do nothing
-      }*/
-      ploader.load();
-    }
   }
 }

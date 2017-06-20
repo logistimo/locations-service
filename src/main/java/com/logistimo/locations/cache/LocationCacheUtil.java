@@ -60,7 +60,7 @@ public class LocationCacheUtil {
     log.info("cache reloaded successfully");
   }
 
-  private void loadCache() {
+  public void loadCache() {
     loadCountryCache();
     loadStateCache();
     loadDistrictCache();
@@ -68,8 +68,8 @@ public class LocationCacheUtil {
     loadPlaceCache();
   }
 
-  @Transactional
-  private void loadPlaceCache(){
+  @Transactional(value = "lcTransactionManager", readOnly = true)
+  public void loadPlaceCache() {
     int limit  = 50;
     int total = (int)cityRepository.count();
     int noOfPages = total/limit;
@@ -106,15 +106,15 @@ public class LocationCacheUtil {
             cache.putIfAbsent(pl.getName(), pl);
           }
         } catch (Exception e) {
-          e.printStackTrace();
+          log.warn("Issue with country cache reload", e);
         }
       }
       p++;
     }
   }
 
-  @Transactional
-  private void loadStateCache () {
+  @Transactional(value = "lcTransactionManager", readOnly = true)
+  public void loadStateCache() {
     int limit  = 50;
     int total = (int)stateRepository.count();
     int noOfPages = total/limit;
@@ -134,8 +134,8 @@ public class LocationCacheUtil {
     }
   }
 
-  @Transactional
-  private void loadDistrictCache () {
+  @Transactional(value = "lcTransactionManager", readOnly = true)
+  public void loadDistrictCache() {
     int limit  = 50;
     int total = (int)districtRepository.count();
     int noOfPages = total/limit;
@@ -155,8 +155,8 @@ public class LocationCacheUtil {
     }
   }
 
-  @Transactional
-  private void loadSubDistrictCache () {
+  @Transactional(value = "lcTransactionManager", readOnly = true)
+  public void loadSubDistrictCache() {
     int limit  = 50;
     int total = (int)subDistrictRepository.count();
     int noOfPages = total/limit;
@@ -186,7 +186,9 @@ public class LocationCacheUtil {
 
   public void burstCacheByName(String cacheName) {
     Cache cache = getCacheByName(cacheName);
-    cache.clear();
+    if (cache != null) {
+      cache.clear();
+    }
   }
 
   private Cache getCacheByName(String name) {
