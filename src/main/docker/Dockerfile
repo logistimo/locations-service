@@ -29,7 +29,7 @@ ENV JAVA_OPTS="-Xms512M -Xmx1G" \
 
 RUN wget -P $HOME/ http://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.7/jmx_prometheus_javaagent-0.7.jar
 
-ADD dockerfiles/jmx_exporter.json $HOME/
+ADD jmx_exporter.json $HOME/
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
