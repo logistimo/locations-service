@@ -59,19 +59,19 @@ public class Kiosk extends AuditableEntity {
   @Column(name = "LATITUDE")
   private Double latitude;
 
-  @Column(name = "COUNTRYID")
+  @Column(name = "COUNTRY_ID")
   private String countryId;
 
-  @Column(name = "STATEID")
+  @Column(name = "STATE_ID")
   private String stateId;
 
-  @Column(name = "DISTID")
+  @Column(name = "DISTRICT_ID")
   private String districtId;
 
-  @Column(name = "SUBDISTID")
+  @Column(name = "SUBDISTRICT_ID")
   private String subdistrictId;
 
-  @Column(name = "CITYID")
+  @Column(name = "CITY_ID")
   private String placeId;
 
 

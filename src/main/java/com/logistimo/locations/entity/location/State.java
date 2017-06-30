@@ -27,25 +27,26 @@ public class State extends AuditableEntity {
 
   private static final long serialVersionUID = 3487495895819396L;
 
-    @Column(name = "STATENAME")
-    private String name;
+  @Column(name = "STATENAME")
+  private String name;
 
-    @Column(name = "STATECODE")
-    private String code;
+  @Column(name = "STATECODE")
+  private String code;
 
-    @ManyToOne
-    @JoinColumn(name="COUNTRYID",referencedColumnName = "ID")
-    private Country country;
+  @ManyToOne
+  @JoinColumn(name = "COUNTRYID", referencedColumnName = "ID")
+  private Country country;
 
   @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "STATEID")
-    private Set<District> districts = new HashSet<District>();
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "STATEID")
+  private Set<District> districts = new HashSet<District>();
 
   @Transient
   private List<District> districtUI = new ArrayList<>();
 
-    public State () {}
+  public State() {
+  }
 
   public void populateDistUI(Set<District> distList) {
     districtUI.clear();
@@ -60,37 +61,37 @@ public class State extends AuditableEntity {
     }
   }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public Country getCountry() {
-        return country;
-    }
+  public Country getCountry() {
+    return country;
+  }
 
-    public void setCountry(Country country) {
-        this.country = country;
-    }
+  public void setCountry(Country country) {
+    this.country = country;
+  }
 
-    public Set<District> getDistricts() {
-        return districts;
-    }
+  public Set<District> getDistricts() {
+    return districts;
+  }
 
-    public void setDistricts(Set<District> districts) {
-        this.districts = districts;
-    }
+  public void setDistricts(Set<District> districts) {
+    this.districts = districts;
+  }
 
   public List<District> getDistrictUI() {
     return districtUI;
@@ -98,22 +99,28 @@ public class State extends AuditableEntity {
 
   public void setDistrictUI(List<District> districtUI) {
     this.districtUI = districtUI;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        State state = (State) o;
-        if (getId() != null ? !getId().equals(state.getId()) : state.getId() != null) {
-            return false;
-        }
-        return getName() != null ? getName().equals(state.getName()) : state.getName() == null;
+    State state = (State) o;
+    if (getId() != null ? !getId().equals(state.getId()) : state.getId() != null) {
+      return false;
     }
+    return getName() != null ? getName().equals(state.getName()) : state.getName() == null;
+  }
 
+  @Override
+  public int hashCode() {
+    int result = getName().hashCode();
+    result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+    return result;
+  }
 }

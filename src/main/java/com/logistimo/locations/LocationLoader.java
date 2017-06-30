@@ -1,6 +1,5 @@
 package com.logistimo.locations;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,17 +41,11 @@ public class LocationLoader {
 
   public void load() throws IOException {
 
-    //ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-//    FileReader
-//        fileReader =
-//        new FileReader(new File(getClass().getResource("classpath:location.json").getFile()));
     org.springframework.core.io.Resource resource = new ClassPathResource("location.json");
     Reader fileReader = new InputStreamReader(resource.getInputStream());
     JsonParser parser = new JsonParser();
     JsonObject countries = parser.parse(fileReader).getAsJsonObject().get("data").getAsJsonObject();
     Iterator itr = countries.entrySet().iterator();
-    Gson gson = new Gson();
-    //System.out.println((String) gson.fromJson(new JsonReader(fileReader), String.class));
 
     //Country
     Country country = null;

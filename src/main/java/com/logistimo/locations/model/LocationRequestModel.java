@@ -14,18 +14,11 @@ public class LocationRequestModel implements Serializable {
 
   @NotNull(message = "Country code can not be null!")
   private String countryCode;
-
   private String countryName;
-
-  //@NotNull(message = "State can not be null!")
   private String state;
-
   private String district;
-
   private String taluk;
-
   private String block;
-  //@NotNull(message = "City can not be null!")
   private String city;
   private Double latitude;
   private Double longitude;
@@ -36,6 +29,12 @@ public class LocationRequestModel implements Serializable {
   private String userName;
 
   public LocationRequestModel() {
+  }
+
+  public LocationRequestModel(String countryCode, String appName, String userName) {
+    this.countryCode = countryCode;
+    this.appName = appName;
+    this.userName = userName;
   }
 
   public String getCity() {
