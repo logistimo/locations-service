@@ -12,6 +12,7 @@ exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom \
     -Dapp.redis.host=$REDIS_HOST \
     -Dapp.redis.port=$REDIS_PORT \
     -Dapp-data.start=$APP_START \
+    -Dapp.issentinel=$ISSENTINEL \
     -Dapp.redis.sentinel.master=$SENTINEL_MASTER \
     -Dapp.redis.sentinel.nodes=$SENTINEL_HOST \
     -javaagent:$HOME/jmx_prometheus_javaagent-0.7.jar=$JAVA_AGENT_PORT:$HOME/jmx_exporter.json \
