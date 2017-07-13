@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.MapPropertySource;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
@@ -16,6 +17,13 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -24,6 +32,11 @@ import javax.annotation.Resource;
  */
 @Configuration
 public class RedisConfiguration extends CachingConfigurerSupport {
+
+  private static final String
+      REDIS_SENTINEL_MASTER_CONFIG_PROPERTY =
+      "spring.redis.sentinel.master";
+  private static final String REDIS_SENTINEL_NODES_CONFIG_PROPERTY = "spring.redis.sentinel.nodes";
 
   @Resource
   Environment env;
@@ -44,7 +57,6 @@ public class RedisConfiguration extends CachingConfigurerSupport {
   @Bean
   @Conditional(SentinelCondition.class)
   public JedisConnectionFactory sentinelJedisConnectionFactory() {
-
     JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory(sentinelConfig());
     jedisConnectionFactory.setUsePool(true);
     return jedisConnectionFactory;
@@ -53,11 +65,17 @@ public class RedisConfiguration extends CachingConfigurerSupport {
   @Bean
   @Conditional(SentinelCondition.class)
   public RedisSentinelConfiguration sentinelConfig() {
+
+    String master = env.getProperty("app.redis.sentinel.master");
+    String node = env.getProperty("app.redis.sentinel.nodes");
+    String[] nodes = node.split(",");
+    Set<String> nodeset = new HashSet<>(Arrays.asList(nodes));
+    MapPropertySource
+        propertySource =
+        new MapPropertySource("RedisSentinelConfiguration", asMap(master, nodeset));
     RedisSentinelConfiguration
         SENTINEL_CONFIG =
-        new RedisSentinelConfiguration().master(env.getProperty("app.redis.sentinel.master")) //
-            .sentinel(env.getProperty("app.redis.sentinel.node1.host"), 26379)//
-            .sentinel(env.getProperty("app.redis.sentinel.node2.host"), 26378);
+        new RedisSentinelConfiguration(propertySource);
     return SENTINEL_CONFIG;
   }
 
@@ -84,5 +102,14 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     redisCacheManager.getCache("country").put("IN", "IN");
     return redisCacheManager;
   }
+
+  private Map<String, Object> asMap(String master, Set<String> sentinelHostAndPorts) {
+    Map<String, Object> map = new HashMap<>();
+    map.put(REDIS_SENTINEL_MASTER_CONFIG_PROPERTY, master);
+    map.put(REDIS_SENTINEL_NODES_CONFIG_PROPERTY,
+        StringUtils.collectionToCommaDelimitedString(sentinelHostAndPorts));
+    return map;
+  }
+
 
 }
