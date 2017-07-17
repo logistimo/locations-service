@@ -18,12 +18,13 @@ import java.util.Locale;
 @ControllerAdvice
 public class LSExceptionMapper extends ResponseEntityExceptionHandler {
 
+  static final String ECODE = "LSE001";
   @ResponseBody
   @ExceptionHandler(ValidationException.class)
   public ResponseEntity<ErrorResource> handleException(ValidationException exception, Locale locale)
           throws IOException {
 
-    return new ResponseEntity<>(new ErrorResource(exception.getMessage(), null, HttpStatus.BAD_REQUEST.value()),
+    return new ResponseEntity<>(new ErrorResource(exception.getMessage(), ECODE, HttpStatus.BAD_REQUEST.value()),
             HttpStatus.BAD_REQUEST);
 
   }
