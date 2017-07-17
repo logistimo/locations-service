@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
 import javax.validation.Validator;
 import java.util.Date;
 import java.util.Iterator;
@@ -46,7 +47,7 @@ public class LocationServiceImpl implements LocationService {
       while(itr.hasNext()){
         errBuilder.append(itr.next().getMessage());
       }
-      throw new LSServiceException(errBuilder.toString());
+      throw new ValidationException(errBuilder.toString());
     }
     //country detail
     Country country = repoApi.getCountryByCode(model.getCountryCode());
