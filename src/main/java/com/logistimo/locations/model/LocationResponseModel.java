@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class LocationResponseModel implements Serializable{
 
   private String city;
+
   private String country;
 
   private String countryId;
@@ -28,9 +29,9 @@ public class LocationResponseModel implements Serializable{
 
   private String blockId;
 
-  private String placeId;
+    private String cityId;
 
-  private String zipcode;
+    private String pincode;
 
   public LocationResponseModel() {
 
@@ -39,7 +40,7 @@ public class LocationResponseModel implements Serializable{
   public LocationResponseModel(String country, String countryId, String state,
                                String stateId, String district, String districtId,
                                String taluk, String talukId, String block, String blockId,
-                               String city, String placeId, String zipcode) {
+                               String city, String cityId, String pincode) {
     this.country = country;
     this.countryId = countryId;
     this.state = state;
@@ -51,8 +52,8 @@ public class LocationResponseModel implements Serializable{
     this.block = block;
     this.blockId = blockId;
     this.city = city;
-    this.placeId = placeId;
-    this.zipcode = zipcode;
+      this.cityId = cityId;
+      this.pincode = pincode;
   }
 
   public String getCountry() {
@@ -135,14 +136,6 @@ public class LocationResponseModel implements Serializable{
     this.blockId = blockId;
   }
 
-  public String getPlaceId() {
-    return placeId;
-  }
-
-  public void setPlaceId(String placeId) {
-    this.placeId = placeId;
-  }
-
   public String getCity() {
     return city;
   }
@@ -151,13 +144,21 @@ public class LocationResponseModel implements Serializable{
     this.city = city;
   }
 
-  public String getZipcode() {
-    return zipcode;
+    public String getCityId() {
+        return cityId;
   }
 
-  public void setZipcode(String zipcode) {
-    this.zipcode = zipcode;
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
   }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
 
   @Override
   public String toString() {
@@ -173,8 +174,8 @@ public class LocationResponseModel implements Serializable{
         ", block='" + block + '\'' +
         ", blockId=" + blockId +
         ", city='" + city + '\'' +
-        ", zipcode ='" + zipcode + '\'' +
-        ", placeId=" + placeId +
+            ", pincode ='" + pincode + '\'' +
+            ", cityId=" + cityId +
         '}';
   }
 }

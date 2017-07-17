@@ -1,4 +1,4 @@
-package com.logistimo.locations;
+package com.logistimo.locations.loader;
 
 import com.logistimo.locations.entity.logistimo.Kiosk;
 import com.logistimo.locations.entity.logistimo.UserAccount;
@@ -7,14 +7,12 @@ import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.repository.logistimo.KioskRepository;
 import com.logistimo.locations.repository.logistimo.UserAccountRepositpry;
 import com.logistimo.locations.service.LocationService;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by kumargaurav on 14/02/17.
@@ -92,8 +90,8 @@ public class PlaceLoader {
         k.setSubdistrictId(rm.getTalukId());
       }
 
-      if (rm.getPlaceId() != null) {
-        k.setPlaceId(rm.getPlaceId());
+        if (rm.getCityId() != null) {
+            k.setPlaceId(rm.getCityId());
       }
     }
     kioskRepository.save(list);
@@ -151,8 +149,8 @@ public class PlaceLoader {
         k.setSubdistrictId(rm.getTalukId());
       }
 
-      if (rm.getPlaceId() != null) {
-        k.setPlaceId(rm.getPlaceId());
+        if (rm.getCityId() != null) {
+            k.setPlaceId(rm.getCityId());
       }
     }
     userAccountRepositpry.save(list);

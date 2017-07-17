@@ -1,5 +1,7 @@
 package com.logistimo.locations.config;
 
+import com.logistimo.locations.filter.LocationServiceFilter;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -15,5 +17,13 @@ public class LocationBeanConfig {
   @Bean
   public Validator validator() {
     return new LocalValidatorFactoryBean();
+  }
+
+  @Bean
+  public FilterRegistrationBean filter() {
+    FilterRegistrationBean registration = new FilterRegistrationBean();
+    registration.setFilter(new LocationServiceFilter());
+    registration.addUrlPatterns("/locations*");
+    return registration;
   }
 }
