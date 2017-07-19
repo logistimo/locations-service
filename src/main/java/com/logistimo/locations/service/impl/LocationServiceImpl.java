@@ -1,30 +1,25 @@
 package com.logistimo.locations.service.impl;
 
-import com.logistimo.locations.entity.location.City;
-import com.logistimo.locations.entity.location.Country;
-import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.State;
-import com.logistimo.locations.entity.location.SubDistrict;
+import com.logistimo.locations.entity.location.*;
 import com.logistimo.locations.exception.LSServiceException;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.service.LocationService;
 import com.logistimo.locations.service.RepoApi;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 
 /**
  * Created by kumargaurav on 14/02/17.
@@ -52,7 +47,7 @@ public class LocationServiceImpl implements LocationService {
       while(itr.hasNext()){
         errBuilder.append(itr.next().getMessage());
       }
-      throw new LSServiceException(errBuilder.toString());
+      throw new ValidationException(errBuilder.toString());
     }
     //country detail
     Country country = repoApi.getCountryByCode(model.getCountryCode());
@@ -132,8 +127,8 @@ public class LocationServiceImpl implements LocationService {
     }
     if (city != null) {
       m.setCity(city.getName());
-      m.setPlaceId(city.getId());
-      m.setZipcode(city.getPostalCode());
+      m.setCityId(city.getId());
+      m.setPincode(city.getPostalCode());
     }
     return m;
   }

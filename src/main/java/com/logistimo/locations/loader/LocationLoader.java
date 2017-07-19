@@ -1,29 +1,22 @@
-package com.logistimo.locations;
+package com.logistimo.locations.loader;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.repository.location.CountryRepository;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * Created by kumargaurav on 17/01/17.
