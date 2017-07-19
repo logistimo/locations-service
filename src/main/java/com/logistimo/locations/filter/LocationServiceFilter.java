@@ -25,7 +25,7 @@ public class LocationServiceFilter extends GenericFilterBean {
         HttpServletRequest req = (HttpServletRequest) request;
         //check app-name header atleast
         String security = req.getHeader("x-app-name");
-        if (security == null || Arrays.asList(APPS).contains(security)) {
+        if (security == null || !Arrays.asList(APPS).contains(security)) {
             HttpServletResponse httpResponse = (HttpServletResponse) response;
             httpResponse.setContentType("application/json");
             httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Required headers not specified in the request");

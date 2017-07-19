@@ -23,7 +23,7 @@ public class LocationBeanConfig {
   public FilterRegistrationBean filter() {
     FilterRegistrationBean registration = new FilterRegistrationBean();
     registration.setFilter(new LocationServiceFilter());
-    registration.addUrlPatterns("/locations*");
+    registration.addUrlPatterns("/locations/*");
     return registration;
   }
 }
