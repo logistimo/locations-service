@@ -3,20 +3,11 @@ package com.logistimo.locations.entity.location;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.logistimo.locations.entity.AuditableEntity;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * Created by kumargaurav on 17/01/17.
@@ -25,7 +16,7 @@ import javax.persistence.Transient;
 @Table(name = "DISTRICT")
 public class District extends AuditableEntity {
 
-  private static final long serialVersionUID = 3487495895819397L;
+    private static final long serialVersionUID = 1L;
 
   @Column(name = "DISTNAME")
   private String name;

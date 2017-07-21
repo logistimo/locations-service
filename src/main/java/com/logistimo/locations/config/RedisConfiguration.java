@@ -2,7 +2,6 @@ package com.logistimo.locations.config;
 
 import com.logistimo.locations.config.condition.SentinelCondition;
 import com.logistimo.locations.config.condition.StandaloneCondition;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
@@ -15,17 +14,11 @@ import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * Created by kumargaurav on 06/03/17.
@@ -88,8 +81,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
       redisTemplate.setConnectionFactory(jedisConnectionFactory());
     }
     redisTemplate.setExposeConnection(true);
-    redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+    redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
     return redisTemplate;
   }
 
@@ -98,8 +90,6 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     RedisCacheManager redisCacheManager = new RedisCacheManager(redisTemplate());
     redisCacheManager.setUsePrefix(true);
     redisCacheManager.setDefaultExpiration(86400l);
-    redisCacheManager.getCache("country");
-    redisCacheManager.getCache("country").put("IN", "IN");
     return redisCacheManager;
   }
 
