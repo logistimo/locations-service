@@ -1,7 +1,6 @@
 package com.logistimo.locations.service.impl;
 
 import com.logistimo.locations.entity.location.*;
-import com.logistimo.locations.exception.LSServiceException;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.service.LocationService;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
@@ -36,8 +36,33 @@ public class LocationServiceImpl implements LocationService {
   RepoApi repoApi;
 
   @Override
-  public LocationResponseModel getPlaceDetail(LocationRequestModel model)
-      throws LSServiceException {
+  public LocationResponseModel getPlaceDetail(LocationRequestModel model) {
+
+    validate(model);
+    //country detail
+    Country country = repoApi.getCountryByCode(model.getCountryCode());
+    //state detail
+    State state = null;
+    if (!StringUtils.isEmpty(model.getState())) {
+      state = repoApi.getStateByName(country.getId(), model.getState());
+    }
+    //district detail
+    District district = null;
+    if (!StringUtils.isEmpty(model.getDistrict())) {
+      district = repoApi.getDistrictByName(state.getId(), model.getDistrict());
+    }
+    //subdistrict detail
+    SubDistrict taluk = null;
+    if (!StringUtils.isEmpty(model.getTaluk())) {
+      taluk = repoApi.getSubDistrictByName(district.getId(), model.getTaluk());
+    }
+    //Place detail
+    City city = getAndCreate(model, country, state, district, taluk);
+    //returning response
+    return getResponse(city, country, state, district, taluk);
+  }
+
+  private void validate(LocationRequestModel model) {
     //validating the request data
     Set<ConstraintViolation<LocationRequestModel>> violations = validator.validate(model);
     if (!violations.isEmpty() && violations.size() > 0) {
@@ -49,19 +74,6 @@ public class LocationServiceImpl implements LocationService {
       }
       throw new ValidationException(errBuilder.toString());
     }
-    //country detail
-    Country country = repoApi.getCountryByCode(model.getCountryCode());
-    //state detail
-    State state = repoApi.getStateByName(model.getState());
-    //district detail
-    District district = repoApi.getDistrictByName(model.getDistrict());
-    //subdistrict detail
-    SubDistrict taluk = repoApi.getSubDistrictByName(model.getTaluk());
-    //Place detail
-    City city = getAndCreate(model,country,state,district,taluk);
-    //returning response
-    return getResponse(city != null ? city : null, country, state != null ? state : null,
-        district != null ? district : null, taluk != null ? taluk : null);
   }
 
   @Override
@@ -73,11 +85,29 @@ public class LocationServiceImpl implements LocationService {
   private City getAndCreate(LocationRequestModel model,Country country,State state,District district,SubDistrict subDistrict){
 
     City city = null;
-    String p = null;
+    String p = model.getPlace();
+    String countryId = country.getId();
+    String stateId;
+    String distId;
+    String subdistId;
+    if (null != state) {
+      stateId = state.getId();
+    } else {
+      stateId = null;
+    }
+    if (null != district) {
+      distId = district.getId();
+    } else {
+      distId = null;
+    }
+    if (null != subDistrict) {
+      subdistId = subDistrict.getId();
+    } else {
+      subdistId = null;
+    }
     //prevent null key lookup in cache
-    if (model.getPlace() != null && model.getPlace().trim().length() > 0) {
-      p = model.getPlace();
-      city = repoApi.getPlaceByName(p);
+    if (!StringUtils.isEmpty(p)) {
+      city = repoApi.getPlaceByName(countryId, stateId, distId, subdistId, p);
     }
 
     //if no existing place found create one
@@ -86,14 +116,10 @@ public class LocationServiceImpl implements LocationService {
       city.setName(p);
       city.setCreatedBy(model.getUserName());
       city.setCreatedOn(new Date());
-      if (null != district) {
-        city.setDistrictId(district.getId());
-      }
-      if (null != subDistrict) {
-        city.setSubdistrictId(subDistrict.getId());
-      }
-      city.setCountryId(country.getId());
-      city.setStateId(state.getId());
+      city.setDistrictId(distId);
+      city.setSubdistrictId(subdistId);
+      city.setCountryId(countryId);
+      city.setStateId(stateId);
       city.setLatitude(model.getLatitude());
       city.setLongitude(model.getLongitude());
       if (model.getPincode() != null) {

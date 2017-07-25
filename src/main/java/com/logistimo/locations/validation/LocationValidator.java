@@ -6,7 +6,6 @@ import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.service.RepoApi;
-
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -43,7 +42,7 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
     }
     State state = null;
     if (!StringUtils.isEmpty(s.getState())) {
-      state = repoApi.getStateByName(s.getState());
+      state = repoApi.getStateByName(country.getId(), s.getState());
       if (null == state) {
         message = " Invalid state name \n";
         constraintValidatorContext.disableDefaultConstraintViolation();
@@ -61,7 +60,7 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
 
     District district = null;
     if (!StringUtils.isEmpty(s.getDistrict())) {
-      district = repoApi.getDistrictByName(s.getDistrict());
+      district = repoApi.getDistrictByName(state.getId(), s.getDistrict());
       if(district == null || !district.getState().equals(state)) {
         message = " district state combination not valid \n";
         constraintValidatorContext.disableDefaultConstraintViolation();
@@ -70,7 +69,7 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
       }
     }
     if(!StringUtils.isEmpty(s.getTaluk())) {
-      SubDistrict subDistrict = repoApi.getSubDistrictByName(s.getTaluk());
+      SubDistrict subDistrict = repoApi.getSubDistrictByName(district.getId(), s.getTaluk());
       if (subDistrict == null || !subDistrict.getDistrict().equals(district)) {
         message = " district taluk combination not valid \n";
         constraintValidatorContext.disableDefaultConstraintViolation();

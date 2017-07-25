@@ -1,17 +1,8 @@
 package com.logistimo.locations.service.impl;
 
-import com.logistimo.locations.entity.location.City;
-import com.logistimo.locations.entity.location.Country;
-import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.State;
-import com.logistimo.locations.entity.location.SubDistrict;
-import com.logistimo.locations.repository.location.CityRepository;
-import com.logistimo.locations.repository.location.CountryRepository;
-import com.logistimo.locations.repository.location.DistrictRepository;
-import com.logistimo.locations.repository.location.StateRepository;
-import com.logistimo.locations.repository.location.SubDistrictRepository;
+import com.logistimo.locations.entity.location.*;
+import com.logistimo.locations.repository.location.*;
 import com.logistimo.locations.service.RepoApi;
-
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -43,7 +34,7 @@ public class RepoApiImpl implements RepoApi {
 
 
   @Override
-  @Cacheable(value = "country", condition = "#key != null")
+  @Cacheable(value = "country", key = "'CN'.concat('#').concat(#code)", unless = "#key != null")
   public Country getCountryByCode(String code) {
     return countryRepository.findByCode(code);
   }
@@ -54,31 +45,53 @@ public class RepoApiImpl implements RepoApi {
   }
 
   @Override
-  @Cacheable(value = "state", condition = "#key != null")
-  public State getStateByName(String name) {
-    return stateRepository.findByName(name);
+  @Cacheable(value = "state", key = "'ST'.concat('#').concat(#countryId).concat('#').concat(#name)", unless = "#key != null")
+  public State getStateByName(String countryId, String name) {
+    return stateRepository.findByName(countryId, name);
+  }
+
+
+  @Override
+  @Cacheable(value = "district", key = "'DST'.concat('#').concat(#stateId).concat('#').concat(#name)", unless = "#key != null")
+  public District getDistrictByName(String stateId, String name) {
+    return districtRepository.findByName(stateId, name);
   }
 
   @Override
-  @Cacheable(value = "district", condition = "#key != null")
-  public District getDistrictByName(String name) {
-    return districtRepository.findByName(name);
+  @Cacheable(value = "subdistrict", key = "'SDST'.concat('#').concat(#distId).concat('#').concat(#name)", unless = "#key != null")
+  public SubDistrict getSubDistrictByName(String distId, String name) {
+    return subDistrictRepository.findByName(distId, name);
   }
 
-  @Override
-  @Cacheable(value = "subdistrict", condition = "#key != null")
-  public SubDistrict getSubDistrictByName(String name) {
-    return subDistrictRepository.findByName(name);
-  }
 
   @Override
-  @Cacheable(value = "city", condition = "#key != null")
+  @Cacheable(value = "city", unless = "#key != null")
   public City getPlaceByName(String name) {
     return cityRepository.findByPlaceName(name);
   }
 
+
   @Override
-  @CachePut(value = "city", key = "#city.name", condition = "#key != null")
+  @Cacheable(value = "city",
+          key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#subdistId?:'').concat('#').concat(#name)"
+          , unless = "#key != null")
+  public City getPlaceByName(String countryId, String stateId, String distId, String subdistId, String name) {
+    if (distId != null) {
+      if (subdistId != null) {
+        return cityRepository.findByCountryStateDistTalukPlaceName(countryId, stateId, distId, subdistId, name);
+      } else {
+        return cityRepository.findByCountryStateDistPlaceName(countryId, stateId, distId, name);
+      }
+    } else {
+      return cityRepository.findByCountryStatePlaceName(countryId, stateId, name);
+    }
+  }
+
+
+  @Override
+  @CachePut(value = "city",
+          key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.subdistrictId?:'').concat('#').concat(#city.name)",
+          unless = "#key != null")
   public City savePlace(City city) {
     return  cityRepository.save(city);
   }
