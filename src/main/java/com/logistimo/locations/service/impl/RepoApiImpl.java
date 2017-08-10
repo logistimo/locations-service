@@ -1,8 +1,17 @@
 package com.logistimo.locations.service.impl;
 
-import com.logistimo.locations.entity.location.*;
-import com.logistimo.locations.repository.location.*;
+import com.logistimo.locations.entity.location.City;
+import com.logistimo.locations.entity.location.Country;
+import com.logistimo.locations.entity.location.District;
+import com.logistimo.locations.entity.location.State;
+import com.logistimo.locations.entity.location.SubDistrict;
+import com.logistimo.locations.repository.location.CityRepository;
+import com.logistimo.locations.repository.location.CountryRepository;
+import com.logistimo.locations.repository.location.DistrictRepository;
+import com.logistimo.locations.repository.location.StateRepository;
+import com.logistimo.locations.repository.location.SubDistrictRepository;
 import com.logistimo.locations.service.RepoApi;
+
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -73,15 +82,14 @@ public class RepoApiImpl implements RepoApi {
 
   @Override
   @Cacheable(value = "city",
-          key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#subdistId?:'').concat('#').concat(#name)"
-          , unless = "#key != null")
-  public City getPlaceByName(String countryId, String stateId, String distId, String subdistId, String name) {
+      key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#subdistId?:'').concat('#').concat(#name)"
+      , unless = "#key != null")
+  public City getPlaceByName(String countryId, String stateId, String distId, String subdistId,
+                             String name) {
+    //TODO: These might return multiple rows, if we allow finding without Taluk and later on add Taluk.
     if (distId != null) {
-      if (subdistId != null) {
-        return cityRepository.findByCountryStateDistTalukPlaceName(countryId, stateId, distId, subdistId, name);
-      } else {
-        return cityRepository.findByCountryStateDistPlaceName(countryId, stateId, distId, name);
-      }
+      return cityRepository.findByCountryStateDistPlaceName(countryId, stateId, distId, name);
+
     } else {
       return cityRepository.findByCountryStatePlaceName(countryId, stateId, name);
     }
@@ -90,10 +98,10 @@ public class RepoApiImpl implements RepoApi {
 
   @Override
   @CachePut(value = "city",
-          key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.subdistrictId?:'').concat('#').concat(#city.name)",
-          unless = "#key != null")
+      key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.subdistrictId?:'').concat('#').concat(#city.name)",
+      unless = "#key != null")
   public City savePlace(City city) {
-    return  cityRepository.save(city);
+    return cityRepository.save(city);
   }
 
   @Override
