@@ -1,10 +1,15 @@
 package com.logistimo.locations.service.impl;
 
-import com.logistimo.locations.entity.location.*;
+import com.logistimo.locations.entity.location.City;
+import com.logistimo.locations.entity.location.Country;
+import com.logistimo.locations.entity.location.District;
+import com.logistimo.locations.entity.location.State;
+import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.service.LocationService;
 import com.logistimo.locations.service.RepoApi;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -12,14 +17,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by kumargaurav on 14/02/17.
@@ -67,11 +72,8 @@ public class LocationServiceImpl implements LocationService {
     Set<ConstraintViolation<LocationRequestModel>> violations = validator.validate(model);
     if (!violations.isEmpty() && violations.size() > 0) {
       StringBuilder errBuilder = new StringBuilder();
-      log.error("Invalid request with bad data {} ", model);
-      Iterator<ConstraintViolation<LocationRequestModel>> itr = violations.iterator();
-      while(itr.hasNext()){
-        errBuilder.append(itr.next().getMessage());
-      }
+      violations.forEach(violation -> errBuilder.append(violation.getMessage()));
+      log.error("Invalid request with data {} and error {}", model, errBuilder.toString());
       throw new ValidationException(errBuilder.toString());
     }
   }
@@ -84,36 +86,31 @@ public class LocationServiceImpl implements LocationService {
 
   private City getAndCreate(LocationRequestModel model,Country country,State state,District district,SubDistrict subDistrict){
 
+    String placeName = model.getPlace();
+    if (StringUtils.isEmpty(placeName)) {
+      return null;
+    }
     City city = null;
-    String p = model.getPlace();
     String countryId = country.getId();
-    String stateId;
-    String distId;
-    String subdistId;
+    String stateId = null;
+    String distId = null;
+    String subdistId = null;
     if (null != state) {
       stateId = state.getId();
-    } else {
-      stateId = null;
     }
     if (null != district) {
       distId = district.getId();
-    } else {
-      distId = null;
     }
     if (null != subDistrict) {
       subdistId = subDistrict.getId();
-    } else {
-      subdistId = null;
     }
     //prevent null key lookup in cache
-    if (!StringUtils.isEmpty(p)) {
-      city = repoApi.getPlaceByName(countryId, stateId, distId, subdistId, p);
-    }
+    city = repoApi.getPlaceByName(countryId, stateId, distId, subdistId, placeName);
 
     //if no existing place found create one
-    if (city == null && p != null) {
+    if (city == null) {
       city = new City();
-      city.setName(p);
+      city.setName(placeName);
       city.setCreatedBy(model.getUserName());
       city.setCreatedOn(new Date());
       city.setDistrictId(distId);
@@ -122,15 +119,21 @@ public class LocationServiceImpl implements LocationService {
       city.setStateId(stateId);
       city.setLatitude(model.getLatitude());
       city.setLongitude(model.getLongitude());
-      if (model.getPincode() != null) {
-        city.setPostalCode(model.getPincode());
-      }
+      city.setPostalCode(model.getPincode());
       city = repoApi.savePlace(city);
-    } else if (city != null) {
+    } else {
+      boolean changed = false;
       if (model.getPincode() != null && !model.getPincode().equals(city.getPostalCode())) {
         city.setPostalCode(model.getPincode());
+        changed = true;
       }
-      city = repoApi.savePlace(city);
+      if(subdistId != null && city.getSubdistrictId() == null){
+        city.setSubdistrictId(subdistId);
+        changed = true;
+      }
+      if(changed) {
+        city = repoApi.savePlace(city);
+      }
     }
     return  city;
   }

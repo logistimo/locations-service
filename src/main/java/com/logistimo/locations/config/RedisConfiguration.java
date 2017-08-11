@@ -1,5 +1,12 @@
 package com.logistimo.locations.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.logistimo.locations.config.condition.SentinelCondition;
 import com.logistimo.locations.config.condition.StandaloneCondition;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +44,22 @@ public class RedisConfiguration extends CachingConfigurerSupport {
   @Value("${app.issentinel}")
   private Boolean isSentinel;
 
+  public static ObjectMapper createRedisObjectmapper() {
+    return new ObjectMapper()
+        .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY)//\\
+        .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+        .configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
+        .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
+        .configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false)
+        .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
+        .configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, false)
+        .configure(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY, false)
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .configure(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS, false)
+        .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false) //\\
+        .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+  }
 
   @Bean
   @Conditional(StandaloneCondition.class)
@@ -81,7 +104,8 @@ public class RedisConfiguration extends CachingConfigurerSupport {
       redisTemplate.setConnectionFactory(jedisConnectionFactory());
     }
     redisTemplate.setExposeConnection(true);
-    redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+    redisTemplate
+        .setValueSerializer(new GenericJackson2JsonRedisSerializer(createRedisObjectmapper()));
     return redisTemplate;
   }
 
