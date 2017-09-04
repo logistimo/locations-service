@@ -8,7 +8,9 @@ import javax.persistence.*;
  * Created by kumargaurav on 17/01/17.
  */
 @Entity
-@Table(name = "CITY")
+@Table(name = "CITY",
+    uniqueConstraints =
+        {@UniqueConstraint(columnNames = {"COUNTRYID", "STATEID", "DISTID", "PLACENAME"})})
 public class City extends AuditableEntity {
 
     private static final long serialVersionUID = 1L;

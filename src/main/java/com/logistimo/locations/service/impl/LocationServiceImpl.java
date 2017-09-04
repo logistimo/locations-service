@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -73,13 +72,8 @@ public class LocationServiceImpl implements LocationService {
     Set<ConstraintViolation<LocationRequestModel>> violations = validator.validate(model);
     if (!violations.isEmpty() && violations.size() > 0) {
       StringBuilder errBuilder = new StringBuilder();
-      //TODO: Log the errBuilder string as well at the end.
-      log.error("Invalid request with bad data {} ", model);
-      //TODO: Replace with for each.
-      Iterator<ConstraintViolation<LocationRequestModel>> itr = violations.iterator();
-      while(itr.hasNext()){
-        errBuilder.append(itr.next().getMessage());
-      }
+      violations.forEach(violation -> errBuilder.append(violation.getMessage()));
+      log.error("Invalid request with data {} and error {}", model, errBuilder.toString());
       throw new ValidationException(errBuilder.toString());
     }
   }

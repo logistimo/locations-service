@@ -67,7 +67,7 @@ public class RepoApiImpl implements RepoApi {
   }
 
   @Override
-  @Cacheable(value = "subdistrict", key = "'SDST'.concat('#').concat(#distId).concat('#').concat(#name)", unless = "#key != null")
+  //@Cacheable(value = "subdistrict", key = "'SDST'.concat('#').concat(#distId).concat('#').concat(#name)", unless = "#key != null")
   public SubDistrict getSubDistrictByName(String distId, String name) {
     return subDistrictRepository.findByName(distId, name);
   }
@@ -82,11 +82,10 @@ public class RepoApiImpl implements RepoApi {
 
   @Override
   @Cacheable(value = "city",
-      key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#subdistId?:'').concat('#').concat(#name)"
+      key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#name)"
       , unless = "#key != null")
   public City getPlaceByName(String countryId, String stateId, String distId, String subdistId,
                              String name) {
-    //TODO: These might return multiple rows, if we allow finding without Taluk and later on add Taluk.
     if (distId != null) {
       return cityRepository.findByCountryStateDistPlaceName(countryId, stateId, distId, name);
 
@@ -98,7 +97,7 @@ public class RepoApiImpl implements RepoApi {
 
   @Override
   @CachePut(value = "city",
-      key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.subdistrictId?:'').concat('#').concat(#city.name)",
+      key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.name)",
       unless = "#key != null")
   public City savePlace(City city) {
     return cityRepository.save(city);
