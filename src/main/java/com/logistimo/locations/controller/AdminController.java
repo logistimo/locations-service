@@ -63,4 +63,12 @@ public class AdminController {
     }
     return "location entities initialized!!";
   }
+
+  @RequestMapping(path = "/add-locations", method = RequestMethod.POST)
+  public
+  @ResponseBody
+  String addLocations(@RequestBody String location) {
+    lloader.load(location);
+    return "location added successfully";
+  }
 }
