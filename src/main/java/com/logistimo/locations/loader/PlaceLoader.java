@@ -33,7 +33,6 @@ public class PlaceLoader {
   @Resource
   LocationService locationService;
 
-
   public void load() {
     loadKiosk();
     loadUser();
@@ -154,6 +153,42 @@ public class PlaceLoader {
       }
     }
     userAccountRepositpry.save(list);
+  }
+
+  public void updateIds () {
+    updateKiosk();
+    updateUser();
+  }
+
+  private void updateKiosk () {
+
+    int limit  = 50;
+    int total = kioskRepository.countKioskWithLOcIdsNull();
+    int noOfPages = total/limit;
+    if(total%limit != 0) {
+      noOfPages = noOfPages + 1;
+    }
+    int p= 0;
+    while(p < noOfPages) {
+      Page<Kiosk> res = kioskRepository.findKioskWithLocIdsNull(new PageRequest(p, limit));
+      processKiosk(res.getContent());
+      p++;
+    }
+  }
+
+  private void updateUser () {
+    int limit  = 50;
+    int total = userAccountRepositpry.countUserWithLOcIdsNull();
+    int noOfPages = total/limit;
+    if(total%limit != 0) {
+      noOfPages = noOfPages + 1;
+    }
+    int p= 0;
+    while(p < noOfPages) {
+      Page<UserAccount> res = userAccountRepositpry.findUserWithLocIdsNull(new PageRequest(p, limit));
+      processUser(res.getContent());
+      p++;
+    }
   }
 
 }

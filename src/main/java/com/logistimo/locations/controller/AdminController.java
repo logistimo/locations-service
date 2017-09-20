@@ -71,4 +71,12 @@ public class AdminController {
     lloader.load(location);
     return "location added successfully";
   }
+
+  @RequestMapping(path = "/update-locationids", method = RequestMethod.GET)
+  public
+  @ResponseBody
+  String updateLocationIds() {
+    ploader.updateIds();
+    return "locations ids updated successfully";
+  }
 }

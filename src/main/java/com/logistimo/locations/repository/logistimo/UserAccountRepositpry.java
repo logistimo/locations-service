@@ -14,4 +14,14 @@ public interface UserAccountRepositpry extends JpaRepository<UserAccount, Long> 
 
   @Query(value = "SELECT k FROM UserAccount k")
   Page<UserAccount> findAllUser(Pageable pageable);
+
+  @Query(value = "SELECT count(*) FROM  USERACCOUNT  WHERE ( DISTRICT IS NOT NULL AND DISTRICT <> '' AND DISTRICT_ID IS NULL ) "
+      + "OR ( state IS NOT NULL AND STATE <> '' AND STATE_ID IS NULL AND ( DISTRICT IS NULL OR DISTRICT = ''))",
+      nativeQuery = true)
+  Integer countUserWithLOcIdsNull ();
+
+  @Query(value = "SELECT * FROM  USERACCOUNT  WHERE ( DISTRICT IS NOT NULL AND DISTRICT <> '' AND DISTRICT_ID IS NULL ) "
+      + "OR ( state IS NOT NULL AND STATE <> '' AND STATE_ID IS NULL AND ( DISTRICT IS NULL OR DISTRICT = ''))",
+      nativeQuery = true)
+  Page<UserAccount> findUserWithLocIdsNull(Pageable pageable);
 }
