@@ -21,7 +21,7 @@ public interface UserAccountRepositpry extends JpaRepository<UserAccount, Long> 
   Integer countUserWithLOcIdsNull ();
 
   @Query(value = "SELECT * FROM  USERACCOUNT  WHERE ( DISTRICT IS NOT NULL AND DISTRICT <> '' AND DISTRICT_ID IS NULL ) "
-      + "OR ( state IS NOT NULL AND STATE <> '' AND STATE_ID IS NULL AND ( DISTRICT IS NULL OR DISTRICT = ''))",
+      + "OR ( state IS NOT NULL AND STATE <> '' AND STATE_ID IS NULL AND ( DISTRICT IS NULL OR DISTRICT = '')) ORDER BY ?#{#pageable}",
       nativeQuery = true)
   Page<UserAccount> findUserWithLocIdsNull(Pageable pageable);
 }
