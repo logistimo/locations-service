@@ -148,11 +148,7 @@ public class LocationRequestModel implements Serializable {
         ", state='" + state + '\'' +
         ", district='" + district + '\'' +
         ", taluk='" + taluk + '\'' +
-        ", block='" + block + '\'' +
         ", city='" + city + '\'' +
-        ", latitude=" + latitude +
-        ", longitude=" + longitude +
-        ", pincode='" + pincode + '\'' +
         ", appName='" + appName + '\'' +
         ", userName='" + userName + '\'' +
         '}';

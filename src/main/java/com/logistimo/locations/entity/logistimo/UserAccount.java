@@ -200,5 +200,21 @@ public class UserAccount {
   public void setPlaceId(String placeId) {
     this.placeId = placeId;
   }
+
+  @Override
+  public String toString() {
+    return "UserAccount{" +
+        "userId='" + userId + '\'' +
+        ", domainId=" + domainId +
+        ", country='" + country + '\'' +
+        ", state='" + state + '\'' +
+        ", district='" + district + '\'' +
+        ", city='" + city + '\'' +
+        ", countryId='" + countryId + '\'' +
+        ", stateId='" + stateId + '\'' +
+        ", districtId='" + districtId + '\'' +
+        ", placeId='" + placeId + '\'' +
+        '}';
+  }
 }
 

@@ -7,11 +7,16 @@ import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.repository.logistimo.KioskRepository;
 import com.logistimo.locations.repository.logistimo.UserAccountRepositpry;
 import com.logistimo.locations.service.LocationService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +28,8 @@ public class PlaceLoader {
   private static final String UNAME = "location-user";
 
   private static final String ANAME = "location-migration";
+
+  private static final Logger log = LoggerFactory.getLogger(PlaceLoader.class);
 
   @Resource
   KioskRepository kioskRepository;
@@ -57,6 +64,7 @@ public class PlaceLoader {
   private void processKiosk(List<Kiosk> list) {
     LocationRequestModel m = null;
     LocationResponseModel rm = null;
+    List<Kiosk> mlist = new ArrayList<>();
     for (Kiosk k :list) {
       m = new LocationRequestModel();
       m.setCountryCode(k.getCountry());
@@ -67,6 +75,7 @@ public class PlaceLoader {
       //test set up
       m.setUserName(UNAME);
       m.setAppName(ANAME);
+      log.info("processing kiosk with data {}",m);
       try {
         rm = locationService.getPlaceDetail(m);
 
@@ -76,6 +85,8 @@ public class PlaceLoader {
       }
       if(rm == null)
         continue;
+      mlist.add(k);
+      log.info("kiosk location response with data {}",rm);
       if (null != rm.getCountryId()) {
         k.setCountryId(rm.getCountryId());
       }
@@ -89,11 +100,14 @@ public class PlaceLoader {
         k.setSubdistrictId(rm.getTalukId());
       }
 
-        if (rm.getCityId() != null) {
-            k.setPlaceId(rm.getCityId());
+      if (rm.getCityId() != null) {
+        k.setPlaceId(rm.getCityId());
       }
     }
-    kioskRepository.save(list);
+    if (!mlist.isEmpty()) {
+      kioskRepository.save(mlist);
+      mlist.stream().forEach(k -> log.info("kiosk with data {} updated", k));
+    }
   }
 
   private void loadUser() {
@@ -115,6 +129,7 @@ public class PlaceLoader {
   private void processUser(List<UserAccount> list) {
     LocationRequestModel m = null;
     LocationResponseModel rm = null;
+    List<UserAccount> mlist = new ArrayList<>();
     for (UserAccount k : list) {
       m = new LocationRequestModel();
       m.setCountryCode(k.getCountry());
@@ -125,6 +140,7 @@ public class PlaceLoader {
       //test set up
       m.setUserName(UNAME);
       m.setAppName(ANAME);
+      log.info("processing user with data {}",m);
       try {
         rm = locationService.getPlaceDetail(m);
 
@@ -135,6 +151,8 @@ public class PlaceLoader {
       if (rm == null) {
         continue;
       }
+      mlist.add(k);
+      log.info("user location response with data {}",rm);
       if (null != rm.getCountryId()) {
         k.setCountryId(rm.getCountryId());
       }
@@ -148,11 +166,14 @@ public class PlaceLoader {
         k.setSubdistrictId(rm.getTalukId());
       }
 
-        if (rm.getCityId() != null) {
-            k.setPlaceId(rm.getCityId());
+      if (rm.getCityId() != null) {
+        k.setPlaceId(rm.getCityId());
       }
     }
-    userAccountRepositpry.save(list);
+    if (!mlist.isEmpty()) {
+      userAccountRepositpry.save(mlist);
+      mlist.stream().forEach(k -> log.info("user with data {} updated", k));
+    }
   }
 
   public void updateIds () {
