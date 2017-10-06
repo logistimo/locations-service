@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
  * Created by kumargaurav on 02/01/17.
  */
 @MappedSuperclass
-public class AuditableEntity extends IdEntity {
+public class AuditableEntity {
 
   private static final long serialVersionUID = 3487495895819394L;
 

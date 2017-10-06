@@ -2,6 +2,9 @@ package com.logistimo.locations.entity.location;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.logistimo.locations.entity.AuditableEntity;
+import com.logistimo.locations.entity.Identifiable;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,9 +17,21 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "COUNTRY")
-public class Country extends AuditableEntity {
+public class Country extends AuditableEntity implements Identifiable<String> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
+
+  @Id
+  @GenericGenerator(
+      name = "assigned-sequence",
+      strategy = "com.logistimo.locations.entity.identifier.LocationStringSeqIdentifier",
+      parameters = {
+          @org.hibernate.annotations.Parameter(
+              name = "sequence_prefix", value = "CN#"),
+      }
+  )
+  @GeneratedValue(generator = "assigned-sequence", strategy = GenerationType.SEQUENCE)
+  protected String id;
 
   @Column(name = "COUNTRYNAME")
   private String name;
@@ -35,6 +50,14 @@ public class Country extends AuditableEntity {
   public Country() {
   }
 
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public String getName() {
     return name;
@@ -79,6 +102,11 @@ public class Country extends AuditableEntity {
         stateUI.add(state);
       }
     }
+  }
+
+  @Override
+  public String getEntityName() {
+    return getCode();
   }
 
   @Override

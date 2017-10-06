@@ -1,6 +1,11 @@
 package com.logistimo.locations.entity.location;
 
 import com.logistimo.locations.entity.AuditableEntity;
+import com.logistimo.locations.entity.Identifiable;
+
+import static com.logistimo.locations.constants.LocationConstants.HASH;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -9,9 +14,21 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "BLOCK")
-public class Block extends AuditableEntity {
+public class Block extends AuditableEntity implements Identifiable<String> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
+
+  @Id
+  @GenericGenerator(
+      name = "assigned-sequence",
+      strategy = "com.logistimo.locations.entity.identifier.LocationStringSeqIdentifier",
+      parameters = {
+          @org.hibernate.annotations.Parameter(
+              name = "sequence_prefix", value = "BL#"),
+      }
+  )
+  @GeneratedValue(generator = "assigned-sequence", strategy = GenerationType.SEQUENCE)
+  protected String id;
 
   @Column(name = "BLOCKNAME")
   private String name;
@@ -24,6 +41,14 @@ public class Block extends AuditableEntity {
   private Long districtId;
 
   public Block () {}
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public String getName() {
     return name;
@@ -47,5 +72,12 @@ public class Block extends AuditableEntity {
 
   public void setDistrictId(Long districtId) {
     this.districtId = districtId;
+  }
+
+  @Override
+  public String getEntityName() {
+    StringBuffer buf = new StringBuffer();
+    buf.append(getSubdistrictId().getName()).append(HASH).append(getName());
+    return buf.toString();
   }
 }

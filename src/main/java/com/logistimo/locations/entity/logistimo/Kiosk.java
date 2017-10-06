@@ -1,6 +1,6 @@
 package com.logistimo.locations.entity.logistimo;
 
-import com.logistimo.locations.entity.AuditableEntity;
+import com.logistimo.locations.entity.LSAuditableEntity;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ import javax.persistence.Table;
     @AttributeOverride(name = "createdBy",column = @Column(name = "RGDBY")),
     @AttributeOverride(name = "createdOn",column = @Column(name = "LASTUPDATED"))
 })
-public class Kiosk extends AuditableEntity {
+public class Kiosk extends LSAuditableEntity {
 
 
   @Column(name = "KIOSKID",insertable=false, updatable=false)

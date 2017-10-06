@@ -1,6 +1,11 @@
 package com.logistimo.locations.entity.location;
 
 import com.logistimo.locations.entity.AuditableEntity;
+import com.logistimo.locations.entity.Identifiable;
+
+import static com.logistimo.locations.constants.LocationConstants.HASH;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -11,9 +16,21 @@ import javax.persistence.*;
 @Table(name = "CITY",
     uniqueConstraints =
         {@UniqueConstraint(columnNames = {"COUNTRYID", "STATEID", "DISTID", "PLACENAME"})})
-public class City extends AuditableEntity {
+public class City extends AuditableEntity implements Identifiable<String> {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @GenericGenerator(
+        name = "assigned-sequence",
+        strategy = "com.logistimo.locations.entity.identifier.LocationStringSeqIdentifier",
+        parameters = {
+            @org.hibernate.annotations.Parameter(
+                name = "sequence_prefix", value = "CT#"),
+        }
+    )
+    @GeneratedValue(generator = "assigned-sequence", strategy = GenerationType.SEQUENCE)
+    protected String id;
 
     @Column(name = "PLACENAME")
     private String name;
@@ -49,7 +66,21 @@ public class City extends AuditableEntity {
     @Column(name = "DISTID")
     private String districtId;
 
+    @Column(name = "ISALIAS")
+    private Boolean isAlias;
+
+    @Column(name = "CITYKEYID")
+    private String cityKeyId;
+
     public City () {}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -137,5 +168,40 @@ public class City extends AuditableEntity {
 
     public void setDistrictId(String districtId) {
         this.districtId = districtId;
+    }
+
+    public Boolean getAlias() {
+        return isAlias;
+    }
+
+    public void setAlias(Boolean alias) {
+        isAlias = alias;
+    }
+
+    public String getCityKeyId() {
+        return cityKeyId;
+    }
+
+    public void setCityKeyId(String cityKeyId) {
+        this.cityKeyId = cityKeyId;
+    }
+
+    @Override
+    public String getEntityName() {
+
+        StringBuffer buf = new StringBuffer();
+        if (this.countryId != null) {
+            buf.append(this.countryId);
+            buf.append(HASH);
+        }
+        if (this.stateId != null) {
+            buf.append(this.stateId);
+            buf.append(HASH);
+        }
+        if (this.districtId != null) {
+            buf.append(this.countryId);
+            buf.append(HASH);
+        }
+        return buf.append(getName()).toString();
     }
 }

@@ -2,6 +2,11 @@ package com.logistimo.locations.entity.location;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.logistimo.locations.entity.AuditableEntity;
+import com.logistimo.locations.entity.Identifiable;
+
+import static com.logistimo.locations.constants.LocationConstants.HASH;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,9 +19,21 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "STATE")
-public class State extends AuditableEntity {
+public class State extends AuditableEntity implements Identifiable<String> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
+
+  @Id
+  @GenericGenerator(
+      name = "assigned-sequence",
+      strategy = "com.logistimo.locations.entity.identifier.LocationStringSeqIdentifier",
+      parameters = {
+          @org.hibernate.annotations.Parameter(
+              name = "sequence_prefix", value = "ST#"),
+      }
+  )
+  @GeneratedValue(generator = "assigned-sequence", strategy = GenerationType.SEQUENCE)
+  protected String id;
 
   @Column(name = "STATENAME")
   private String name;
@@ -50,6 +67,14 @@ public class State extends AuditableEntity {
         districtUI.add(dist);
       }
     }
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -90,6 +115,13 @@ public class State extends AuditableEntity {
 
   public void setDistrictUI(List<District> districtUI) {
     this.districtUI = districtUI;
+  }
+
+  @Override
+  public String getEntityName() {
+    StringBuffer buf = new StringBuffer();
+    buf.append(getCountry().getName()).append(HASH).append(getName());
+    return buf.toString();
   }
 
   @Override

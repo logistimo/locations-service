@@ -1,6 +1,11 @@
 package com.logistimo.locations.entity.location;
 
 import com.logistimo.locations.entity.AuditableEntity;
+import com.logistimo.locations.entity.Identifiable;
+
+import static com.logistimo.locations.constants.LocationConstants.HASH;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -11,9 +16,21 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "SUBDISTRICT")
-public class SubDistrict extends AuditableEntity {
+public class SubDistrict extends AuditableEntity implements Identifiable<String> {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
+
+  @Id
+  @GenericGenerator(
+      name = "assigned-sequence",
+      strategy = "com.logistimo.locations.entity.identifier.LocationStringSeqIdentifier",
+      parameters = {
+          @org.hibernate.annotations.Parameter(
+              name = "sequence_prefix", value = "SDT#"),
+      }
+  )
+  @GeneratedValue(generator = "assigned-sequence", strategy = GenerationType.SEQUENCE)
+  protected String id;
 
   @Column(name = "SUBDISNAME")
   private String name;
@@ -28,6 +45,14 @@ public class SubDistrict extends AuditableEntity {
 
   public SubDistrict() {
 
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getName() {
@@ -53,6 +78,13 @@ public class SubDistrict extends AuditableEntity {
 
   public void setDistrict(District district) {
     this.district = district;
+  }
+
+  @Override
+  public String getEntityName() {
+    StringBuffer buf = new StringBuffer();
+    buf.append(getDistrict().getName()).append(HASH).append(getName());
+    return buf.toString();
   }
 
   @Override

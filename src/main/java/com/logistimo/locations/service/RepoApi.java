@@ -1,6 +1,7 @@
 package com.logistimo.locations.service;
 
 import com.logistimo.locations.entity.location.*;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,17 +14,20 @@ public interface RepoApi {
 
   Country getCountryByName(String name);
 
-    State getStateByName(String countryId, String name);
+  State getStateByName(String countryId, String name);
 
-    District getDistrictByName(String stateId, String name);
+  District getDistrictByName(String stateId, String name);
 
-    SubDistrict getSubDistrictByName(String distId, String name);
+  SubDistrict getSubDistrictByName(String distId, String name);
 
   City getPlaceByName(String name);
 
-    City getPlaceByName(String countryId, String stateId, String distId, String subdistId, String name);
+  City getPlaceByName(String countryId, String stateId, String distId, String subdistId,
+                      String name);
 
   City savePlace(City city);
 
   Page<City> getPlaces(Pageable pageable);
+
+  City renamePlace(String cityId, String name);
 }

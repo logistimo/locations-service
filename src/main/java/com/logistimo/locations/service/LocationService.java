@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface LocationService {
 
-    LocationResponseModel getPlaceDetail(LocationRequestModel model);
+  LocationResponseModel getPlaceDetail(LocationRequestModel model);
 
   List<City> getPlaces(int page, int limit);
 }

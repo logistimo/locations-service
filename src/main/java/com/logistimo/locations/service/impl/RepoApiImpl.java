@@ -12,7 +12,6 @@ import com.logistimo.locations.repository.location.StateRepository;
 import com.logistimo.locations.repository.location.SubDistrictRepository;
 import com.logistimo.locations.service.RepoApi;
 
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,7 +42,7 @@ public class RepoApiImpl implements RepoApi {
 
 
   @Override
-  @Cacheable(value = "country", key = "'CN'.concat('#').concat(#code)", unless = "#key != null")
+//  @Cacheable(value = "country", key = "'CN'.concat('#').concat(#code)", unless = "#key != null")
   public Country getCountryByCode(String code) {
     return countryRepository.findByCode(code);
   }
@@ -54,7 +53,7 @@ public class RepoApiImpl implements RepoApi {
   }
 
   @Override
-  @Cacheable(value = "state", key = "'ST'.concat('#').concat(#countryId).concat('#').concat(#name)", unless = "#key != null")
+  //@Cacheable(value = "state", key = "'ST'.concat('#').concat(#countryId).concat('#').concat(#name)", unless = "#key != null")
   public State getStateByName(String countryId, String name) {
     return stateRepository.findByName(countryId, name);
   }
@@ -74,16 +73,16 @@ public class RepoApiImpl implements RepoApi {
 
 
   @Override
-  @Cacheable(value = "city", unless = "#key != null")
+  //@Cacheable(value = "city", unless = "#key != null")
   public City getPlaceByName(String name) {
     return cityRepository.findByPlaceName(name);
   }
 
 
   @Override
-  @Cacheable(value = "city",
-      key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#name)"
-      , unless = "#key != null")
+//  @Cacheable(value = "city",
+//      key = "'CT'.concat('#').concat(#countryId).concat('#').concat(#stateId).concat('#').concat(#distId?:'').concat('#').concat(#name)"
+//      , unless = "#key != null")
   public City getPlaceByName(String countryId, String stateId, String distId, String subdistId,
                              String name) {
     if (distId != null) {
@@ -96,9 +95,9 @@ public class RepoApiImpl implements RepoApi {
 
 
   @Override
-  @CachePut(value = "city",
-      key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.name)",
-      unless = "#key != null")
+//  @CachePut(value = "city",
+//      key = "'CT'.concat('#').concat(#city.countryId).concat('#').concat(#city.stateId).concat('#').concat(#city.districtId?:'').concat('#').concat(#city.name)",
+//      unless = "#key != null")
   public City savePlace(City city) {
     return cityRepository.save(city);
   }
@@ -106,6 +105,17 @@ public class RepoApiImpl implements RepoApi {
   @Override
   public Page<City> getPlaces(Pageable pageable) {
     return cityRepository.findAll(pageable);
+  }
+
+  @Override
+  public City renamePlace(String cityId, String name) {
+    City city = cityRepository.findByPlaceId(cityId);
+    if (city == null) {
+      throw new IllegalArgumentException("Inalid city id");
+    }
+    city.setAlias(true);
+    //TODO: complete this method; decide input parameter and how user can rename city : finalise the use case
+    return city;
   }
 }
 
