@@ -4,82 +4,82 @@
       "name": "Switzerland",
       "states": {
         "Aargau": {
-          "id": 1
+          "districts": {}
         },
         "Ausser-Rhoden": {
-          "id": 2
+          "districts": {}
         },
         "Basel-Landschaft": {
-          "id": 3
+          "districts": {}
         },
         "Basel-Stadt": {
-          "id": 4
+          "districts": {}
         },
         "Bern": {
-          "id": 5
+          "districts": {}
         },
         "Fribourg": {
-          "id": 6
+          "districts": {}
         },
         "Geneva": {
-          "id": 7
+          "districts": {}
         },
         "Glarus": {
-          "id": 8
+          "districts": {}
         },
         "Graubünden": {
-          "id": 9
+          "districts": {}
         },
         "Inner-Rhoden": {
-          "id": 10
+          "districts": {}
         },
         "Jura": {
-          "id": 26
+          "districts": {}
         },
         "Luzern": {
-          "id": 11
+          "districts": {}
         },
         "Neuchâtel": {
-          "id": 12
+          "districts": {}
         },
         "Nidwalden": {
-          "id": 13
+          "districts": {}
         },
         "Obwalden": {
-          "id": 14
+          "districts": {}
         },
         "Sankt Gallen": {
-          "id": 15
+          "districts": {}
         },
         "Schaffhausen": {
-          "id": 16
+          "districts": {}
         },
         "Schwyz": {
-          "id": 17
+          "districts": {}
         },
         "Solothurn": {
-          "id": 18
+          "districts": {}
         },
         "Thurgau": {
-          "id": 19
+          "districts": {}
         },
         "Ticino": {
-          "id": 20
+          "districts": {}
         },
         "Uri": {
-          "id": 21
+          "districts": {}
         },
         "Valais": {
-          "id": 22
+          "districts": {}
         },
         "Vaud": {
-          "id": 23
+          "districts": {}
         },
         "Zug": {
-          "id": 24
+          "districts": {}
         },
         "Zurich": {
-          "id": 25
+          "districts": {}
         }
       }
     },
@@ -1025,7 +1025,28 @@
     "KE": {
       "name": "Kenya",
       "states": {
+        "Central": {
+          "districts": {}
+        },
+        "Coast": {
+          "districts": {}
+        },
+        "Eastern": {
+          "districts": {}
+        },
         "Nairobi": {
+          "districts": {}
+        },
+        "North Eastern": {
+          "districts": {}
+        },
+        "Nyanza": {
+          "districts": {}
+        },
+        "Rift Valley": {
+          "districts": {}
+        },
+        "Western": {
           "districts": {}
         }
       }
@@ -1422,7 +1443,7 @@
         },
         "Odisha": {
           "districts": {
-            "Khorda": {},
+            "Khurda": {},
             "Nayagarh": {},
             "Puri": {},
             "Jagatsinghpur": {},
@@ -1950,6 +1971,7 @@
           "districts": {
             "Ambala": {},
             "Bhiwani": {},
+            "Charkhi Dadri": {},
             "Faridabad": {},
             "Fatehabad": {},
             "Gurgaon": {},
@@ -2031,7 +2053,7 @@
                 "Nirmand"
               ]
             },
-            "Lahaul & Spiti": {
+            "Lahaul Spiti": {
               "taluks": [
                 "Kaza"
               ]
@@ -4453,7 +4475,30 @@
       "name": "Bahrain"
     },
     "BD": {
-      "name": "Bangladesh"
+      "name": "Bangladesh",
+      "states": {
+        "Barisal": {
+          "districts": {}
+        },
+        "Chittagong": {
+          "districts": {}
+        },
+        "Dhaka": {
+          "districts": {}
+        },
+        "Khulna": {
+          "districts": {}
+        },
+        "Rajshahi": {
+          "districts": {}
+        },
+        "Rangpur": {
+          "districts": {}
+        },
+        "Sylhet": {
+          "districts": {}
+        }
+      }
     },
     "BB": {
       "name": "Barbados"
@@ -4567,7 +4612,42 @@
       "name": "Czech Republic"
     },
     "CD": {
-      "name": "Democratic Republic of the Congo"
+      "name": "Democratic Republic of Congo",
+      "states": {
+        "Bandundu": {
+          "districts": {}
+        },
+        "Bas Congo": {
+          "districts": {}
+        },
+        "Equateur": {
+          "districts": {}
+        },
+        "Kasai Occidental": {
+          "districts": {}
+        },
+        "Kasai Oriental": {
+          "districts": {}
+        },
+        "Katanga": {
+          "districts": {}
+        },
+        "Kinshasa City": {
+          "districts": {}
+        },
+        "Maniema": {
+          "districts": {}
+        },
+        "Nord Kivu": {
+          "districts": {}
+        },
+        "Orientale": {
+          "districts": {}
+        },
+        "Sud Kivu": {
+          "districts": {}
+        }
+      }
     },
     "DK": {
       "name": "Denmark",
@@ -4665,7 +4745,106 @@
     "RI": {
       "name": "Indonesia",
       "states": {
+        "Aceh": {
+          "districts": {}
+        },
+        "Bali": {
+          "districts": {}
+        },
+        "Bangka-Belitung": {
+          "districts": {}
+        },
+        "Banten": {
+          "districts": {}
+        },
+        "Bengkulu": {
+          "districts": {}
+        },
+        "Central Java": {
+          "districts": {}
+        },
+        "Central Kalimantan": {
+          "districts": {}
+        },
+        "Central Sulawesi": {
+          "districts": {}
+        },
+        "East Java": {
+          "districts": {}
+        },
+        "East Kalimantan": {
+          "districts": {}
+        },
+        "East Nusa Tenggara": {
+          "districts": {}
+        },
+        "Gorontalo": {
+          "districts": {}
+        },
         "Jakarta": {
+          "districts": {}
+        },
+        "Jambi": {
+          "districts": {}
+        },
+        "Lampung": {
+          "districts": {}
+        },
+        "Maluku": {
+          "districts": {}
+        },
+        "North Kalimantan": {
+          "districts": {}
+        },
+        "North Maluku": {
+          "districts": {}
+        },
+        "North Sulawesi": {
+          "districts": {}
+        },
+        "North Sumatra": {
+          "districts": {}
+        },
+        "Papua": {
+          "districts": {}
+        },
+        "Riau": {
+          "districts": {}
+        },
+        "Riau Islands": {
+          "districts": {}
+        },
+        "South East Sulawesi": {
+          "districts": {}
+        },
+        "South Kalimantan": {
+          "districts": {}
+        },
+        "South Sulawesi": {
+          "districts": {}
+        },
+        "South Sumatra": {
+          "districts": {}
+        },
+        "West Java": {
+          "districts": {}
+        },
+        "West Kalimantan": {
+          "districts": {}
+        },
+        "West Nusa Tenggara": {
+          "districts": {}
+        },
+        "West Papua": {
+          "districts": {}
+        },
+        "West Sulawesi": {
+          "districts": {}
+        },
+        "West Sumatra": {
+          "districts": {}
+        },
+        "Yogyakarta": {
           "districts": {}
         }
       }
@@ -4932,7 +5111,57 @@
       "name": "Sri Lanka"
     },
     "SD": {
-      "name": "Sudan"
+      "name": "Sudan",
+      "states": {
+        "Al Jazirah": {
+          "districts": {}
+        },
+        "Al Qadarif": {
+          "districts": {}
+        },
+        "Blue Nile": {
+          "districts": {}
+        },
+        "Kassala": {
+          "districts": {}
+        },
+        "Khartoum": {
+          "districts": {}
+        },
+        "North Darfur": {
+          "districts": {}
+        },
+        "North Kurdufan": {
+          "districts": {}
+        },
+        "Northern": {
+          "districts": {}
+        },
+        "Red Sea": {
+          "districts": {}
+        },
+        "River Nile": {
+          "districts": {}
+        },
+        "Sennar": {
+          "districts": {}
+        },
+        "South Darfur": {
+          "districts": {}
+        },
+        "South Kurdufan": {
+          "districts": {}
+        },
+        "West Darfur": {
+          "districts": {}
+        },
+        "West Kurdufan": {
+          "districts": {}
+        },
+        "White Nile": {
+          "districts": {}
+        }
+      }
     },
     "SR": {
       "name": "Suriname"

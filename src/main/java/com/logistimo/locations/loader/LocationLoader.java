@@ -112,9 +112,6 @@ public class LocationLoader {
                 }
 
                 if (STATES.equals(centry.getKey()) && centry.getValue().isJsonObject()) {
-                    if (null != cname && ("Switzerland".equals(cname))) {
-                        continue;
-                    }
                     sobject = centry.getValue().getAsJsonObject();
                     sitr = sobject.entrySet().iterator();
                     State state = null;
