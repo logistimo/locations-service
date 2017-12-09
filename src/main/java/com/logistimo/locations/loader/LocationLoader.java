@@ -61,9 +61,15 @@ public class LocationLoader {
     public void load(String json) {
 
         JsonObject jsonObject = null;
+        JsonElement jsonElement = null;
         JsonParser parser = new JsonParser();
         try {
-            jsonObject = parser.parse(json).getAsJsonObject();
+            jsonElement = parser.parse(json);
+            if (jsonElement.isJsonPrimitive()) {
+                jsonObject = parser.parse(jsonElement.getAsString()).getAsJsonObject();
+            } else {
+                jsonObject = jsonElement.getAsJsonObject();
+            }
         } catch (JsonSyntaxException e) {
             log.warn("Issue with location json {} error is {}", json, e.getMessage(), e);
           throw new BadRequestException(e);
