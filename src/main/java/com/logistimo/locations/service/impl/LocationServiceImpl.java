@@ -5,10 +5,13 @@ import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
+import com.logistimo.locations.exception.ExceptionUtils;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.service.LocationService;
 import com.logistimo.locations.service.RepoApi;
+import com.logistimo.locations.validation.LCValidationException;
+import static com.logistimo.locations.constants.LocationConstants.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +22,11 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 
 /**
@@ -74,7 +77,15 @@ public class LocationServiceImpl implements LocationService {
       StringBuilder errBuilder = new StringBuilder();
       violations.forEach(violation -> errBuilder.append(violation.getMessage()));
       log.error("Invalid request with data {} and error {}", model, errBuilder.toString());
-      throw new ValidationException(errBuilder.toString());
+      Optional<ConstraintViolation<LocationRequestModel>> optional = violations.stream().findFirst();
+      String code;
+      if(optional.isPresent()) {
+        code = optional.get().getMessage();
+      } else {
+        code = DEFAULT_ERROR_CODE;
+      }
+      String msg = ExceptionUtils.constructMessage(code);
+      throw new LCValidationException(code, msg);
     }
   }
 

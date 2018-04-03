@@ -65,9 +65,6 @@ public class LocationDSConfig {
     ComboPooledDataSource dataSource = new ComboPooledDataSource();
     dataSource.setMinPoolSize(Integer.parseInt(env.getProperty("hibernate.c3p0.min_size")));
     dataSource.setMaxPoolSize(Integer.parseInt(env.getProperty("hibernate.c3p0.max_size")));
-//  dataSource.setAcquireIncrement(acquireIncrement);
-//  dataSource.setIdleConnectionTestPeriod(idleTestPeriod);
-//  dataSource.setMaxStatements(maxStatements);
     dataSource.setMaxIdleTime(Integer.parseInt(env.getProperty("hibernate.c3p0.idle_test_period")));
     dataSource.setJdbcUrl(env.getProperty("spring.location.db.url"));
     dataSource.setPassword(env.getProperty("spring.location.db.password"));

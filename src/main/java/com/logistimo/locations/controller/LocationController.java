@@ -4,8 +4,6 @@ import com.logistimo.locations.entity.location.City;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 import com.logistimo.locations.service.LocationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +16,6 @@ import java.util.List;
 @RequestMapping(path = "/locations")
 public class LocationController {
 
-  private static final Logger log = LoggerFactory.getLogger(LocationController.class);
 
   @Resource
   LocationService locationService;
