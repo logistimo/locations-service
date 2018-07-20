@@ -28,7 +28,7 @@ ENV JAVA_OPTS="-Xms512M -Xmx1G" \
 	JAVA_AGENT_PORT=9099 \
 	SERVICE_NAME=logi-locations \
     APM_SERVER_URL=localhost:8200 \
-    APM_AGENT_VER=0.6.0
+    APM_AGENT_VER=0.6.0 \
 	APP_START=false
 
 RUN wget -P $HOME/ http://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.7/jmx_prometheus_javaagent-0.7.jar
