@@ -2,13 +2,7 @@ package com.logistimo.locations.entity.location;
 
 import com.logistimo.locations.entity.AuditableEntity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by kumargaurav on 27/02/17.
@@ -17,7 +11,7 @@ import javax.persistence.Table;
 @Table(name = "BLOCK")
 public class Block extends AuditableEntity {
 
-  private static final long serialVersionUID = 3487495895819340L;
+    private static final long serialVersionUID = 1L;
 
   @Column(name = "BLOCKNAME")
   private String name;

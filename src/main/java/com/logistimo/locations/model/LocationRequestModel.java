@@ -2,9 +2,8 @@ package com.logistimo.locations.model;
 
 import com.logistimo.locations.validation.ValidLocation;
 
-import java.io.Serializable;
-
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Created by kumargaurav on 24/02/17.
@@ -14,7 +13,7 @@ public class LocationRequestModel implements Serializable {
 
   @NotNull(message = "Country code can not be null!")
   private String countryCode;
-  private String countryName;
+  private String country;
   private String state;
   private String district;
   private String taluk;
@@ -45,12 +44,12 @@ public class LocationRequestModel implements Serializable {
     this.city = city;
   }
 
-  public String getCountryName() {
-    return countryName;
+  public String getCountry() {
+    return country;
   }
 
-  public void setCountryName(String countryName) {
-    this.countryName = countryName;
+  public void setCountry(String country) {
+    this.country = country;
   }
 
   public String getCountryCode() {
@@ -145,15 +144,11 @@ public class LocationRequestModel implements Serializable {
   public String toString() {
     return "LocationRequestModel{" +
         "countryCode='" + countryCode + '\'' +
-        ", countryName='" + countryName + '\'' +
+            ", country='" + country + '\'' +
         ", state='" + state + '\'' +
         ", district='" + district + '\'' +
         ", taluk='" + taluk + '\'' +
-        ", block='" + block + '\'' +
         ", city='" + city + '\'' +
-        ", latitude=" + latitude +
-        ", longitude=" + longitude +
-        ", pincode='" + pincode + '\'' +
         ", appName='" + appName + '\'' +
         ", userName='" + userName + '\'' +
         '}';

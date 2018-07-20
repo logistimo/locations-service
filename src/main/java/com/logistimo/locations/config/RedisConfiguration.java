@@ -1,8 +1,14 @@
 package com.logistimo.locations.config;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.logistimo.locations.config.condition.SentinelCondition;
 import com.logistimo.locations.config.condition.StandaloneCondition;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;
@@ -15,17 +21,11 @@ import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * Created by kumargaurav on 06/03/17.
@@ -44,6 +44,22 @@ public class RedisConfiguration extends CachingConfigurerSupport {
   @Value("${app.issentinel}")
   private Boolean isSentinel;
 
+  public static ObjectMapper createRedisObjectmapper() {
+    return new ObjectMapper()
+        .enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY)//\\
+        .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+        .configure(DeserializationFeature.UNWRAP_SINGLE_VALUE_ARRAYS, true)
+        .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
+        .configure(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE, false)
+        .configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, false)
+        .configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, false)
+        .configure(DeserializationFeature.FAIL_ON_READING_DUP_TREE_KEY, false)
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .configure(DeserializationFeature.FAIL_ON_UNRESOLVED_OBJECT_IDS, false)
+        .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false) //\\
+        .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+        .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+  }
 
   @Bean
   @Conditional(StandaloneCondition.class)
@@ -88,8 +104,8 @@ public class RedisConfiguration extends CachingConfigurerSupport {
       redisTemplate.setConnectionFactory(jedisConnectionFactory());
     }
     redisTemplate.setExposeConnection(true);
-    redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
-    redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+    redisTemplate
+        .setValueSerializer(new GenericJackson2JsonRedisSerializer(createRedisObjectmapper()));
     return redisTemplate;
   }
 
@@ -98,8 +114,6 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     RedisCacheManager redisCacheManager = new RedisCacheManager(redisTemplate());
     redisCacheManager.setUsePrefix(true);
     redisCacheManager.setDefaultExpiration(86400l);
-    redisCacheManager.getCache("country");
-    redisCacheManager.getCache("country").put("IN", "IN");
     return redisCacheManager;
   }
 

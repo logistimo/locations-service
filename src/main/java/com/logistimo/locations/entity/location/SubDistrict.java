@@ -2,17 +2,9 @@ package com.logistimo.locations.entity.location;
 
 import com.logistimo.locations.entity.AuditableEntity;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * Created by kumargaurav on 17/01/17.
@@ -21,7 +13,7 @@ import javax.persistence.Table;
 @Table(name = "SUBDISTRICT")
 public class SubDistrict extends AuditableEntity {
 
-  private static final long serialVersionUID = 3487495895819398L;
+    private static final long serialVersionUID = 1L;
 
   @Column(name = "SUBDISNAME")
   private String name;

@@ -1,12 +1,12 @@
 package com.logistimo.locations.validation;
 
+import static com.logistimo.locations.constants.LocationConstants.*;
 import com.logistimo.locations.entity.location.Country;
 import com.logistimo.locations.entity.location.District;
 import com.logistimo.locations.entity.location.State;
 import com.logistimo.locations.entity.location.SubDistrict;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.service.RepoApi;
-
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -23,9 +23,6 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
   @Resource
   RepoApi repoApi;
 
-  private String message;
-
-
   @Override
   public void initialize(ValidLocation validLocationHierarchy) {
 
@@ -35,23 +32,24 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
   public boolean isValid(LocationRequestModel s, ConstraintValidatorContext constraintValidatorContext) {
 
     Country country = repoApi.getCountryByCode(s.getCountryCode());
+    String message;
     if(null == country){
-      message = " Invalid Country name \n";
+      message = INVALID_COUNTY_NAME;
       constraintValidatorContext.disableDefaultConstraintViolation();
       constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
       return false;
     }
     State state = null;
     if (!StringUtils.isEmpty(s.getState())) {
-      state = repoApi.getStateByName(s.getState());
+      state = repoApi.getStateByName(country.getId(), s.getState());
       if (null == state) {
-        message = " Invalid state name \n";
+        message = INVALID_STATE_NAME;
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message)
             .addConstraintViolation();
         return false;
       } else if (!state.getCountry().equals(country)) {
-        message = " State country combination not valid \n";
+        message = INVALID_STATE_COUNTRY;
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message)
             .addConstraintViolation();
@@ -61,18 +59,25 @@ public class LocationValidator implements ConstraintValidator<ValidLocation,Loca
 
     District district = null;
     if (!StringUtils.isEmpty(s.getDistrict())) {
-      district = repoApi.getDistrictByName(s.getDistrict());
+      district = repoApi.getDistrictByName(state.getId(), s.getDistrict());
       if(district == null || !district.getState().equals(state)) {
-        message = " district state combination not valid \n";
+        message = INVALID_DISTRICT_STATE;
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         return false;
       }
     }
     if(!StringUtils.isEmpty(s.getTaluk())) {
-      SubDistrict subDistrict = repoApi.getSubDistrictByName(s.getTaluk());
+      if(district == null) {
+        message = INVALID_DISTRICT_EMPTY;
+        constraintValidatorContext.disableDefaultConstraintViolation();
+        constraintValidatorContext.buildConstraintViolationWithTemplate(message)
+            .addConstraintViolation();
+        return false;
+      }
+      SubDistrict subDistrict = repoApi.getSubDistrictByName(district.getId(), s.getTaluk());
       if (subDistrict == null || !subDistrict.getDistrict().equals(district)) {
-        message = " district taluk combination not valid \n";
+        message = INVALID_DISTRICT_TALUK;
         constraintValidatorContext.disableDefaultConstraintViolation();
         constraintValidatorContext.buildConstraintViolationWithTemplate(message).addConstraintViolation();
         return false;

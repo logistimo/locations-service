@@ -204,4 +204,20 @@ public class Kiosk extends AuditableEntity {
   public void setPlaceId(String placeId) {
     this.placeId = placeId;
   }
+
+  @Override
+  public String toString() {
+    return "Kiosk{" +
+        "kioskId=" + kioskId +
+        ", domainId=" + domainId +
+        ", country='" + country + '\'' +
+        ", state='" + state + '\'' +
+        ", district='" + district + '\'' +
+        ", city='" + city + '\'' +
+        ", countryId='" + countryId + '\'' +
+        ", stateId='" + stateId + '\'' +
+        ", districtId='" + districtId + '\'' +
+        ", placeId='" + placeId + '\'' +
+        '}';
+  }
 }

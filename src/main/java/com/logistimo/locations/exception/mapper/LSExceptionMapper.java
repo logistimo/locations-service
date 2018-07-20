@@ -1,15 +1,16 @@
 package com.logistimo.locations.exception.mapper;
 
-import com.logistimo.locations.exception.LSServiceException;
+import com.logistimo.locations.constants.LocationConstants;
+import com.logistimo.locations.exception.BadRequestException;
+import com.logistimo.locations.exception.ErrorResource;
+import com.logistimo.locations.validation.LCValidationException;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by kumargaurav on 24/02/17.
@@ -17,26 +18,20 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class LSExceptionMapper extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(LSServiceException.class)
   @ResponseBody
-  public void handleException(HttpServletResponse response,LSServiceException ex) throws
-      IOException {
-    response.sendError(HttpServletResponse.SC_BAD_REQUEST,getMessage(ex));
+  @ExceptionHandler(LCValidationException.class)
+  public ResponseEntity<ErrorResource> handleException(LCValidationException exception) {
+    return new ResponseEntity<>(new ErrorResource(exception.getMessage(), exception.getCode(), HttpStatus.BAD_REQUEST.value()),
+    HttpStatus.BAD_REQUEST);
   }
 
-  private String getMessage(Throwable exception) {
-    StringBuilder error = getErrorMessage(exception);
-    int depth = 0;
-    while(depth++ < 3 && (exception = exception.getCause()) != null) {
-      error.append(getErrorMessage(exception));
-    }
-    return error.toString();
-  }
+  @ResponseBody
+  @ExceptionHandler(BadRequestException.class)
+  public ResponseEntity<ErrorResource> handleException(BadRequestException exception) {
 
-  private StringBuilder getErrorMessage(Throwable exception) {
-    StringBuilder message = new StringBuilder();
-    message.append(exception.getClass().getName()).append(":");
-    message.append(exception.getMessage()).append(";\n");
-    return message;
+    return new ResponseEntity<>(
+        new ErrorResource(exception.getMessage(), LocationConstants.DEFAULT_ERROR_CODE, HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+
   }
 }

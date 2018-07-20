@@ -1,16 +1,11 @@
 package com.logistimo.locations.controller;
 
-import com.logistimo.locations.LocationLoader;
-import com.logistimo.locations.PlaceLoader;
 import com.logistimo.locations.cache.LocationCacheUtil;
-
+import com.logistimo.locations.loader.LocationLoader;
+import com.logistimo.locations.loader.PlaceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -67,5 +62,21 @@ public class AdminController {
       log.error("Error with location entities init", e.getMessage());
     }
     return "location entities initialized!!";
+  }
+
+  @RequestMapping(path = "/add-locations", method = RequestMethod.POST)
+  public
+  @ResponseBody
+  String addLocations(@RequestBody String location) {
+    lloader.load(location);
+    return "location added successfully";
+  }
+
+  @RequestMapping(path = "/update-locationids", method = RequestMethod.GET)
+  public
+  @ResponseBody
+  String updateLocationIds() {
+    ploader.updateIds();
+    return "locations ids updated successfully";
   }
 }

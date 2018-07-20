@@ -1,11 +1,6 @@
 package com.logistimo.locations.service;
 
-import com.logistimo.locations.entity.location.City;
-import com.logistimo.locations.entity.location.Country;
-import com.logistimo.locations.entity.location.District;
-import com.logistimo.locations.entity.location.State;
-import com.logistimo.locations.entity.location.SubDistrict;
-
+import com.logistimo.locations.entity.location.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -18,13 +13,15 @@ public interface RepoApi {
 
   Country getCountryByName(String name);
 
-  State getStateByName(String name);
+    State getStateByName(String countryId, String name);
 
-  District getDistrictByName (String name);
+    District getDistrictByName(String stateId, String name);
 
-  SubDistrict getSubDistrictByName(String name);
+    SubDistrict getSubDistrictByName(String distId, String name);
 
   City getPlaceByName(String name);
+
+    City getPlaceByName(String countryId, String stateId, String distId, String subdistId, String name);
 
   City savePlace(City city);
 

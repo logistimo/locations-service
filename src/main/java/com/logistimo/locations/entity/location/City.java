@@ -2,20 +2,18 @@ package com.logistimo.locations.entity.location;
 
 import com.logistimo.locations.entity.AuditableEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by kumargaurav on 17/01/17.
  */
 @Entity
-@Table(name = "CITY")
+@Table(name = "CITY",
+    uniqueConstraints =
+        {@UniqueConstraint(columnNames = {"COUNTRYID", "STATEID", "DISTID", "PLACENAME"})})
 public class City extends AuditableEntity {
 
-  private static final long serialVersionUID = 3487495895819399L;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "PLACENAME")
     private String name;

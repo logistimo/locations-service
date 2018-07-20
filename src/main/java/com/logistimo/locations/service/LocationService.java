@@ -1,7 +1,6 @@
 package com.logistimo.locations.service;
 
 import com.logistimo.locations.entity.location.City;
-import com.logistimo.locations.exception.LSServiceException;
 import com.logistimo.locations.model.LocationRequestModel;
 import com.logistimo.locations.model.LocationResponseModel;
 
@@ -12,7 +11,7 @@ import java.util.List;
  */
 public interface LocationService {
 
-  LocationResponseModel getPlaceDetail(LocationRequestModel model) throws LSServiceException;
+    LocationResponseModel getPlaceDetail(LocationRequestModel model);
 
   List<City> getPlaces(int page, int limit);
 }

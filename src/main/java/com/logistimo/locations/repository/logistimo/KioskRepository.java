@@ -14,4 +14,15 @@ public interface KioskRepository extends JpaRepository<Kiosk,Long> {
 
   @Query(value = "SELECT k FROM Kiosk k")
   Page<Kiosk> findAllKiosk(Pageable pageable);
+
+  @Query(value = "SELECT count(*) FROM  KIOSK  WHERE ( DISTRICT IS NOT NULL AND DISTRICT <> '' AND DISTRICT_ID IS NULL ) "
+      + "OR ( state IS NOT NULL AND STATE <> '' AND STATE_ID IS NULL AND ( DISTRICT IS NULL OR DISTRICT = ''))",
+      nativeQuery = true)
+  Integer countKioskWithLOcIdsNull ();
+
+  @Query(value = "SELECT * FROM  KIOSK  WHERE ( DISTRICT IS NOT NULL AND DISTRICT <> '' AND DISTRICT_ID IS NULL ) "
+      + "OR ( state IS NOT NULL AND STATE <> '' AND STATE_ID IS NULL AND ( DISTRICT IS NULL OR DISTRICT = '')) ORDER BY ?#{#pageable}",
+      nativeQuery = true)
+  Page<Kiosk> findKioskWithLocIdsNull(Pageable pageable);
+
 }

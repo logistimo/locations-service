@@ -12,7 +12,7 @@
         <file>${LOG_FILE}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_FILE}.%d{yyyyMMdd}</fileNamePattern>
         </rollingPolicy>
     </appender>
 
@@ -22,6 +22,9 @@
         <appender-ref ref="ROLLING-FILE" />
     </logger>
     <logger name="org.hibernate.engine" level="WARN"/>
+    <logger name="org.springframework.cache" level="trace">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ROLLING-FILE"/>
