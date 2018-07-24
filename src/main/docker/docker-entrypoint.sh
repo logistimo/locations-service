@@ -1,6 +1,7 @@
 #!/bin/bash -x
 
 
+
 exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom \
     -Dserver.port=$SERVER_PORT \
     -Dspring.logistimo.db.url=$MYSQL_LOGI_HOST \
@@ -16,4 +17,8 @@ exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom \
     -Dapp.redis.sentinel.master=$SENTINEL_MASTER \
     -Dapp.redis.sentinel.nodes=$SENTINEL_HOST \
     -javaagent:$HOME/jmx_prometheus_javaagent-0.7.jar=$JAVA_AGENT_PORT:$HOME/jmx_exporter.json \
+    -javaagent:$HOME/elastic-apm-agent-0.6.0.jar \
+	-Delastic.apm.service_name=$SERVICE_NAME \
+    -Delastic.apm.application_packages=com.logistimo.locations \
+    -Delastic.apm.server_url=http://$APM_SERVER_URL \
     -jar $HOME/location-service.jar
