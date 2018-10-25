@@ -59,7 +59,7 @@ public class AdminController {
       Thread.sleep(10000l);
       ploader.load();
     } catch (Exception e) {
-      log.error("Error with location entities init", e.getMessage());
+      log.warn("Error with location entities init", e.getMessage());
     }
     return "location entities initialized!!";
   }

@@ -2,6 +2,8 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <property name="LOG_FILE" value="./logs/location.log"/>
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] - %m%n"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p [%c] - %m%n"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
     <appender name="ROLLING-FILE"

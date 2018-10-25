@@ -76,7 +76,7 @@ public class LocationServiceImpl implements LocationService {
     if (!violations.isEmpty() && violations.size() > 0) {
       StringBuilder errBuilder = new StringBuilder();
       violations.forEach(violation -> errBuilder.append(violation.getMessage()));
-      log.error("Invalid request with data {} and error {}", model, errBuilder.toString());
+      log.warn("Invalid request with data {} and error {}", model, errBuilder.toString());
       Optional<ConstraintViolation<LocationRequestModel>> optional = violations.stream().findFirst();
       String code;
       if(optional.isPresent()) {
