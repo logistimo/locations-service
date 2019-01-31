@@ -20,6 +20,8 @@ Pre-requisites
 
 * JDK 1.8
 * MariaDB 10.1.23
+* Docker
+* apache-maven-3.5.3
 
 Tech stack
 ----------------
@@ -29,6 +31,26 @@ Tech stack
 Modules
 -------
 * logistimo-locations
+
+Build Instructions
+------------------
+
+To build the artifact and create a docker image of the location service, run the following commands.
+
+1. Set environment
+
+```
+export MAVEN_OPTS=-Xmx718m
+export MAVEN_HOME=/opt/apache-maven-3.5.3/
+export JAVA_HOME=/opt/java-home
+export PATH=$JAVA_HOME/bin:$PATH:$MAVEN_HOME/bin
+```
+
+2. Build the artifact and docker image
+
+```
+mvn clean package docker:build
+````
 
 
 Mailing Lists
@@ -61,5 +83,3 @@ Trademarks
 ----------
 
 Logistimo, Logistimo.com, and the Logistimo logo are trademarks and/or service marks. Users may not make use of the trademarks or service marks without prior written permission. Other trademarks or trade names displayed on this website are the property of their respective trademark owners and subject to the respective owners’ terms of use.
-
-
